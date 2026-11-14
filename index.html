@@ -73,6 +73,78 @@ rt{font-size:.5em;font-weight:400}
 .vs .n{font-size:60px}
 #ver{position:fixed;left:6px;bottom:4px;font-size:11px;color:#333;opacity:.7;pointer-events:none}
 @media (max-height:520px){#panel h1{font-size:28px}#panel p{font-size:16px}.step p{font-size:14px!important}.big{min-height:52px;font-size:22px}.score{font-size:52px}#shapes button{width:64px;height:64px}#side button{min-height:48px}}
+/* ===== スマホ用の配置（画面の短い辺が560px未満のとき自動で切りかえ） ===== */
+body.phone #who,body.phone #info{font-size:15px;min-height:44px;padding:4px 10px;border-radius:12px}
+body.phone #info b{font-size:20px!important}
+body.phone #helpBtn{width:44px;height:44px;font-size:22px}
+body.phone #msg{font-size:38px;-webkit-text-stroke:1.5px #333;text-shadow:0 3px 0 #333}
+body.phone #hint span{font-size:16px;padding:4px 10px}
+body.phone #ver{font-size:9px}
+body.phone #panel{padding:10px 12px;border-radius:18px;border-width:3px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+body.phone #panel h1{font-size:24px;margin:2px 0 6px}
+body.phone #panel h2{font-size:19px;margin:2px 0 6px}
+body.phone #panel p{font-size:15px;margin:4px 0;line-height:1.6}
+body.phone .steps{gap:6px;margin:4px 0}
+body.phone .step{padding:4px 6px;border-radius:12px}
+body.phone .step svg{width:72px;height:54px}
+body.phone .step p{font-size:13px!important;line-height:1.6!important}
+body.phone .step b{font-size:16px}
+body.phone .big{font-size:20px;min-height:52px;padding:6px 22px;margin-top:6px}
+body.phone .row{gap:6px;margin:4px 0}
+body.phone .modes button{min-height:56px;font-size:15px;line-height:1.4;padding:2px 4px}
+body.phone .opt{gap:6px;margin:4px 0;font-size:14px}
+body.phone .opt>span{width:auto;min-width:84px}
+body.phone .opt button{min-width:96px;min-height:44px;font-size:15px}
+body.phone .score{font-size:46px}
+body.phone .stars{font-size:30px}
+body.phone .vs{gap:8px}
+body.phone .vs>div{font-size:15px;padding:6px}
+body.phone .vs .n{font-size:38px}
+body.phone .pl{padding:1px 8px}
+/* スマホ横持ち */
+body.phone.land #side{top:58px;left:6px;gap:5px}
+body.phone.land #side button{width:82px;min-height:44px;font-size:11px}
+body.phone.land #side button b{font-size:17px}
+body.phone.land .camrow{width:82px}
+body.phone.land .camrow button{width:39px!important;min-height:44px!important;font-size:16px}
+body.phone.land .camlab{display:none}
+body.phone.land #tray{bottom:4px;padding:4px;gap:4px;border-radius:12px;max-width:calc(100vw - 230px)}
+body.phone.land #tabs button{min-height:40px;font-size:13px;padding:2px 6px}
+body.phone.land #shapes{gap:4px}
+body.phone.land #shapes button{width:68px;height:56px;font-size:10px;white-space:nowrap;letter-spacing:-.5px}
+body.phone.land #shapes svg{width:32px;height:32px}
+body.phone.land #bDone{width:104px;height:64px;font-size:18px;white-space:nowrap;padding:0;right:6px;bottom:6px}
+body.phone.land #ballSel{bottom:4px!important;padding:4px!important;gap:5px!important}
+body.phone.land #ballSel button{width:92px;height:58px;font-size:13px}
+body.phone.land #bEnd{width:96px;height:52px;font-size:19px;right:6px;bottom:6px}
+body.phone.land #hint{bottom:auto;top:60px}
+body.phone.land .steps{flex-direction:row}
+body.phone.land .helpnote,body.phone.land .menunote{display:none}
+/* スマホ縦持ち */
+body.phone.port #top{flex-wrap:wrap;gap:6px}
+body.phone.port #helpBtn{margin-left:auto}
+body.phone.port #info{order:3;margin-left:0}
+body.phone.port #bDone{left:6px;right:6px;bottom:6px;width:auto;height:52px;font-size:22px}
+body.phone.port #tray{left:6px;right:6px;bottom:64px;transform:none;max-width:none;padding:5px;gap:5px;border-radius:14px}
+body.phone.port #tabs button{min-height:44px;font-size:14px;padding:2px 4px}
+body.phone.port #shapes{gap:5px}
+body.phone.port #shapes button{flex:1;width:auto;height:66px;font-size:10px;min-width:0;padding:2px 0;white-space:nowrap;letter-spacing:-.5px}
+body.phone.port #shapes svg{width:36px;height:36px}
+body.phone.port #side{top:auto;left:6px;right:6px;bottom:204px;flex-direction:row;gap:5px}
+body.phone.port #side button{flex:1;width:auto;min-width:0;min-height:52px;font-size:11px;padding:2px}
+body.phone.port #side button b{font-size:18px}
+body.phone.port .camrow{display:contents}
+body.phone.port .camrow button{width:auto!important;flex:.7;min-height:52px!important;font-size:18px}
+body.phone.port .camlab{display:none}
+body.phone.port #ballSel{left:6px!important;right:6px;bottom:6px!important;transform:none!important;padding:5px!important;gap:5px!important}
+body.phone.port #ballSel button{flex:1;width:auto;height:64px;font-size:13px;min-width:0}
+body.phone.port #bEnd{right:6px;bottom:84px;width:96px;height:48px;font-size:18px}
+body.phone.port #hint{bottom:266px}
+body.phone.port.smash #hint{bottom:142px}
+body.phone.port .steps{flex-direction:column}
+body.phone.port .step{display:flex;align-items:center;gap:8px;text-align:left}
+body.phone.port .step svg{flex:none}
+
 </style>
 <script type="importmap">
 {
@@ -85,7 +157,7 @@ rt{font-size:.5em;font-weight:400}
 </script>
 </head>
 <body>
-<!-- build: 2026-11-14c -->
+<!-- build: 2026-11-14d -->
 <canvas id="c"></canvas>
 <div id="top">
   <div id="who"></div>
@@ -118,7 +190,7 @@ import * as CANNON from 'cannon-es';
 
 /* ================= 設定（ここの数値だけ直せば調整できます） ================= */
 const CFG = {
-  version: 'v2026-11-14c',
+  version: 'v2026-11-14d',
   table: { half: 1.1, top: 1.2 },      // 台の半分の幅・台の上面の高さ
   grid: 0.25,                           // 置くときに吸いつく間隔
   gravity: -18,
@@ -134,6 +206,9 @@ const CFG = {
   fingerOffset: 34,                     // タッチのとき指の少し上に置く（px）
   launcher: { x: 0, y: 1.35, z: 8.4 },  // 玉の置き場所（手前・低め）
   throw: { vMin: 9, vMax: 13, pitchMin: 14, pitchMax: 28, yawMax: 24, pull: 0.3, minPower: 0.12 },
+  maxFov: 72,                           // 縦長の画面での視野の上限（度）
+  phoneMax: 560,                        // 短い辺がこれより小さい画面はスマホ用の配置
+  phoneShift: { port: 0.13, land: 0.08, portThrow: -0.1, landThrow: 0.17 }, // スマホで画面の中心を上にずらす量（積む／投げる）
   aimDots: 4,                           // ねらいの点線の長さ（1こ＝0.05秒ぶん。4こで出だしだけ）
   ballGravity: -6,                      // 玉だけ重力を弱くして、ゆっくり飛ばす（台まで約0.8〜1秒）
   balls: {
@@ -569,7 +644,7 @@ function closePanel() { overlay.classList.add('hide'); }
 const R = (k, r) => `<ruby>${k}<rt>${r}</rt></ruby>`;
 const HELP_ICONS = [
   `<svg viewBox="0 0 120 90" width="120" height="90"><rect x="20" y="70" width="80" height="14" fill="#b9895a" stroke="#333" stroke-width="3"/><rect x="30" y="46" width="24" height="24" fill="#e5484d" stroke="#333" stroke-width="3"/><rect x="56" y="46" width="24" height="24" fill="#3b82f6" stroke="#333" stroke-width="3"/><rect x="43" y="22" width="24" height="24" fill="#f5b301" stroke="#333" stroke-width="3" stroke-dasharray="5 4"/><path d="M92 14l-14 14M78 28l2-10M78 28l10-2" stroke="#333" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`,
-  `<svg viewBox="0 0 120 90" width="120" height="90"><circle cx="60" cy="34" r="16" fill="#ff5a5a" stroke="#333" stroke-width="3"/><path d="M60 54v24M60 78l-9-10M60 78l9-10" stroke="#2f6fed" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M60 14V4M60 4l-7 7M60 4l7 7" stroke="#22a35a" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="1 9"/><text x="86" y="74" font-size="14" font-weight="700">ひっぱる</text></svg>`,
+  `<svg viewBox="0 0 120 90" width="120" height="90"><circle cx="60" cy="34" r="16" fill="#ff5a5a" stroke="#333" stroke-width="3"/><path d="M60 54v24M60 78l-9-10M60 78l9-10" stroke="#2f6fed" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M60 14V4M60 4l-7 7M60 4l7 7" stroke="#22a35a" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="1 9"/><text x="72" y="74" font-size="13" font-weight="700">ひっぱる</text></svg>`,
   `<svg viewBox="0 0 120 90" width="120" height="90"><rect x="40" y="70" width="40" height="14" fill="#b9895a" stroke="#333" stroke-width="3"/><rect x="12" y="20" width="20" height="20" fill="#e5484d" stroke="#333" stroke-width="3" transform="rotate(-25 22 30)"/><rect x="86" y="12" width="20" height="20" fill="#3b82f6" stroke="#333" stroke-width="3" transform="rotate(30 96 22)"/><polygon points="60,8 72,30 48,30" fill="#f97316" stroke="#333" stroke-width="3"/><path d="M60 62l-18-14M60 62l18-14M60 62V40" stroke="#f5b301" stroke-width="5" stroke-linecap="round"/></svg>`,
 ];
 function showHelp() {
@@ -581,7 +656,7 @@ function showHelp() {
     <div class="step">${HELP_ICONS[1]}<p><b>② ${R('投', 'な')}げる</b><br>ゆびで ${R('下', 'した')}に ひっぱって、はなす</p></div>
     <div class="step">${HELP_ICONS[2]}<p><b>③ パッカーン！</b><br>${R('台', 'だい')}から ${R('落', 'お')}とした ${R('数', 'かず')}を かぞえるよ</p></div>
   </div>
-  <p>${R('右上', 'みぎうえ')}の「？」で、いつでも この ${R('説明', 'せつめい')}を ${R('見', 'み')}られるよ</p>
+  <p class="helpnote">${R('右上', 'みぎうえ')}の「？」で、いつでも この ${R('説明', 'せつめい')}を ${R('見', 'み')}られるよ</p>
   <button class="big" data-act="helpClose">${G.firstHelp ? 'はじめる' : 'つづける'}</button>`);
 }
 function closeHelp() {
@@ -608,7 +683,7 @@ function renderMenu() {
   <div class="opt"><span>${R('投', 'な')}げる ${R('回数', 'かいすう')}</span>${seg('balls', L.balls, 'なんかいでも', CFG.limitBalls + 'かい')}</div>
   <div class="opt"><span>${R('積', 'つ')}む ${R('数', 'かず')}</span>${seg('count', L.count, 'いくつでも', CFG.limitPieces + 'こ')}</div>
   <div class="opt"><span>${R('積', 'つ')}む ${R('時間', 'じかん')}</span>${seg('time', L.time, 'ゆっくり', CFG.buildTime + 'びょう')}</div>
-  <p>${vs ? `${R('対戦', 'たいせん')}は ${CFG.limitPieces}こ ぜんぶ ${R('積', 'つ')}んで、${CFG.limitBalls}かいで しょうぶ！` : G.mode === 'coop' ? `ひとりが ${R('積', 'つ')}んで、もう ひとりが こわす。こうたいで 2かい あそぶよ` : `すきに ${R('積', 'つ')}んで、すきに こわそう`}</p>
+  <p class="menunote">${vs ? `${R('対戦', 'たいせん')}は ${CFG.limitPieces}こ ぜんぶ ${R('積', 'つ')}んで、${CFG.limitBalls}かいで しょうぶ！` : G.mode === 'coop' ? `ひとりが ${R('積', 'つ')}んで、もう ひとりが こわす。こうたいで 2かい あそぶよ` : `すきに ${R('積', 'つ')}んで、すきに こわそう`}</p>
   <button class="big" data-act="go">スタート</button>`);
 }
 panel.addEventListener('click', e => {
@@ -629,6 +704,7 @@ $('helpBtn').addEventListener('click', () => { audioInit(); SFX.tap(); if (!G.pa
 
 /* ================= HUD ================= */
 function hud() {
+  document.body.classList.toggle('smash', G.screen === 'smash');
   const who = $('who'), info = $('info'), two = G.mode !== 'solo', L = lim();
   if (G.screen === 'build') {
     who.innerHTML = two ? `${pl(G.builder)} が つむ ばん` : 'つむ じかん';
@@ -791,7 +867,7 @@ function loadBall() {
   renderBallSel();
 }
 function aimFromPull(px, py) {
-  const T = CFG.throw, ref = T.pull * innerHeight;
+  const T = CFG.throw, ref = Math.max(110, T.pull * (G.phone ? Math.max(innerWidth, innerHeight) * 0.6 : innerHeight));
   py = Math.max(0, py);
   const power = clamp(Math.hypot(px, py) / ref, 0, 1);
   const yaw = clamp(-px / ref, -1, 1) * T.yawMax * Math.PI / 180;
@@ -912,7 +988,7 @@ canvas.addEventListener('pointercancel', e => pointerEnd(e, true));
 // iPad：拡大・スクロールの防止
 let lastTouch = 0;
 document.addEventListener('touchend', e => { const n = Date.now(); if (n - lastTouch < 300 && !(e.target.closest && e.target.closest('button'))) e.preventDefault(); lastTouch = n; }, { passive: false });
-document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+document.addEventListener('touchmove', e => { if (e.target.closest && e.target.closest('#panel') && panel.scrollHeight > panel.clientHeight) return; e.preventDefault(); }, { passive: false });
 for (const ev of ['gesturestart', 'gesturechange', 'gestureend']) document.addEventListener(ev, e => e.preventDefault());
 document.addEventListener('contextmenu', e => e.preventDefault());
 
@@ -981,10 +1057,12 @@ function update(dt) {
   if (msgTimer > 0) { msgTimer -= dt; if (msgTimer <= 0) $('msg').classList.remove('on'); }
 
   // カメラ
-  const k = Number.isFinite(camera.aspect) && camera.aspect > 0 ? Math.max(1, 1.25 / camera.aspect) : 1, e = 1 - Math.exp(-5 * dt);
+  const k = Number.isFinite(G.camK) ? G.camK : 1, e = 1 - Math.exp(-5 * dt);
   G.camAng = lerp(G.camAng, G.camAngT, 1 - Math.exp(-7 * dt));
+  applyShift();
   if (G.view === 'orbit') { tmpV.set(Math.sin(G.camAng) * 7 * k, 4.6, Math.cos(G.camAng) * 7 * k); camLook.lerp(new THREE.Vector3(0, 2.0, 0), e); }
-  else { tmpV.set(0, 2.4, 11.5 * k); camLook.lerp(new THREE.Vector3(0, 1.7, 0), e); }
+  else { tmpV.set(0, 2.4, 11.5 * Math.min(k, 1.15));   // 投げるときは縦長でもカメラを下げすぎない（玉と山が小さくならないように）
+ camLook.lerp(new THREE.Vector3(0, 1.7, 0), e); }
   camPos.lerp(tmpV, e);
   if (!Number.isFinite(camPos.x + camPos.y + camPos.z)) camPos.copy(tmpV);       // 念のため：おかしな値になったら目標位置に戻す
   if (!Number.isFinite(camLook.x + camLook.y + camLook.z)) camLook.set(0, 1.8, 0);
@@ -998,7 +1076,28 @@ function resize() {
   const w = innerWidth, h = innerHeight;
   if (!(w > 0 && h > 0)) return;
   renderer.setSize(w, h, false);
-  camera.aspect = w / h; camera.updateProjectionMatrix();
+  camera.aspect = w / h;
+  // 縦長の画面では、まず視野を広げ（最大 maxFov 度）、足りないぶんだけカメラを下げる
+  const need = Math.tan(25 * Math.PI / 180) * 1.25;
+  camera.fov = camera.aspect >= 1.25 ? 50 : Math.min(CFG.maxFov, 2 * Math.atan(need / camera.aspect) * 180 / Math.PI);
+  G.camK = Math.max(1, need / (Math.tan(camera.fov * Math.PI / 360) * camera.aspect));
+  if (Math.min(w, h) < CFG.phoneMax && h > w) G.camK *= 0.85;   // スマホ縦持ちは少し寄せる
+  // スマホ判定：短い辺が560px未満ならスマホ用の配置にする（縦持ち・横持ちで別の配置）
+  G.phone = Math.min(w, h) < CFG.phoneMax; G.port = h > w;
+  document.body.classList.toggle('phone', G.phone);
+  document.body.classList.toggle('port', G.phone && G.port);
+  document.body.classList.toggle('land', G.phone && !G.port);
+  G.shiftKey = '';
+  applyShift();
+}
+// 下のボタンに隠れないよう、見える中心を上にずらす（スマホのときだけ。積むときと投げるときで量を変える）
+function applyShift() {
+  const S = CFG.phoneShift, thr = G.view === 'throw';
+  const shift = !G.phone ? 0 : G.port ? (thr ? S.portThrow : S.port) : (thr ? S.landThrow : S.land);
+  const key = shift + ':' + innerWidth + 'x' + innerHeight;
+  if (key === G.shiftKey) return; G.shiftKey = key;
+  if (shift) camera.setViewOffset(innerWidth, innerHeight, 0, innerHeight * shift, innerWidth, innerHeight); else camera.clearViewOffset();
+  camera.updateProjectionMatrix();
 }
 addEventListener('resize', resize); resize();
 
