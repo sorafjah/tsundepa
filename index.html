@@ -161,7 +161,7 @@ body.phone.port .step svg{flex:none}
 </script>
 </head>
 <body>
-<!-- build: 2026-11-14d -->
+<!-- build: 2026-11-14e -->
 <canvas id="c"></canvas>
 <div id="top">
   <div id="who"></div>
@@ -194,7 +194,7 @@ import * as CANNON from 'cannon-es';
 
 /* ================= 設定（ここの数値だけ直せば調整できます） ================= */
 const CFG = {
-  version: 'v2026-11-14d',
+  version: 'v2026-11-14e',
   table: { half: 1.1, top: 1.2 },      // 台の半分の幅・台の上面の高さ
   grid: 0.25,                           // 置くときに吸いつく間隔
   gravity: -18,
@@ -207,7 +207,7 @@ const CFG = {
   pieceDensity: 3.0,                    // パーツの重さ（小さいほど派手に飛ぶ）
   buildDamp: [0.3, 0.6],                // 積むときの動きにくさ（移動・回転）＝崩れにくくする補正
   smashDamp: [0.02, 0.06],              // 壊すときの動きにくさ
-  fingerOffset: 34,                     // タッチのとき指の少し上に置く（px）
+  fingerOffset: 0,                      // タッチのとき指の何px上をねらうか（0＝指の真下に出す）
   launcher: { x: 0, y: 1.35, z: 8.4 },  // 玉の置き場所（手前・低め）
   throw: { vMin: 9, vMax: 13, pitchMin: 14, pitchMax: 28, yawMax: 24, pull: 0.3, minPower: 0.12 },
   maxFov: 72,                           // 縦長の画面での視野の上限（度）
