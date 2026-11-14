@@ -161,7 +161,7 @@ body.phone.port .step svg{flex:none}
 </script>
 </head>
 <body>
-<!-- build: 2026-11-14f -->
+<!-- build: 2026-11-14g -->
 <canvas id="c"></canvas>
 <div id="top">
   <div id="who"></div>
@@ -194,7 +194,7 @@ import * as CANNON from 'cannon-es';
 
 /* ================= 設定（ここの数値だけ直せば調整できます） ================= */
 const CFG = {
-  version: 'v2026-11-14f',
+  version: 'v2026-11-14g',
   table: { half: 1.1, top: 1.2 },      // 台の半分の幅・台の上面の高さ
   grid: 0.25,                           // 置くときに吸いつく間隔
   gravity: -18,
@@ -202,7 +202,10 @@ const CFG = {
   limitPieces: 20,                      // 「20こ」制限
   buildTime: 60,                        // 「60びょう」制限
   limitBalls: 3,                        // 「3かい」制限
-  vsBalls: ['ball', 'ball', 'bomb'],    // 対戦で投げる順番
+  vs: {                                 // 対戦だけの設定（積み方の工夫で差がつくよう、ひとりでより弱い）
+    balls: ['ball', 'ball', 'ball'],    // 投げる順番
+    ballR: 0.18, ballMass: 4,           // 対戦のボールの大きさ・重さ（細いタワー約15こ・低く広い山約3こ落ちる強さ）
+  },
   maxHeight: 6,                         // 台の上にこれ以上は積めない
   pieceDensity: 3.0,                    // パーツの重さ（小さいほど派手に飛ぶ）
   buildDamp: [0.3, 0.6],                // 積むときの動きにくさ（移動・回転）＝崩れにくくする補正
@@ -461,12 +464,10 @@ GEO.cyl = new THREE.CylinderGeometry(0.25, 0.25, 0.5, 24); GEO.cyl.rotateY(Math.
 const SKINS = {
   blocks: { label: 'つみき',     cols: { cube: '#e5484d', tall: '#3b82f6', plank: '#f5b301', cyl: '#22a35a', tri: '#f97316' },
             names: { cube: 'しかく', tall: 'ながしかく', plank: 'いた', cyl: 'まる', tri: 'さんかく' } },
-  daily:  { label: 'にちようひん', cols: { cube: '#c79a5b', tall: '#f4f7fb', plank: '#ffd95a', cyl: '#d83a3a', tri: '#ffffff' },
-            names: { cube: 'だんボール', tall: 'ぎゅうにゅう', plank: 'ものさし', cyl: 'かん', tri: 'おにぎり' } },
   chara:  { label: 'キャラ',     cols: { cube: '#ff8fb3', tall: '#7cc4ff', plank: '#7fe0b0', cyl: '#ffd84d', tri: '#b79cff' },
             names: { cube: 'しかくん', tall: 'のっぽ', plank: 'ぺたくん', cyl: 'まるちゃん', tri: 'さんかくん' } },
 };
-const SKIN_KEYS = ['blocks', 'daily', 'chara'];
+const SKIN_KEYS = ['blocks', 'chara'];
 const std = (o) => new THREE.MeshStandardMaterial(Object.assign({ roughness: 0.75 }, o));
 
 function faceTex(col, w, h, surprised, cx = 0.5, cy = 0.5, scale = 1) {
@@ -501,35 +502,7 @@ function buildMat(skin, shape) {
     arr[slot] = n;
     return { mat: arr, face: { slot, n, s } };
   }
-  // にちようひん
-  if (shape === 'cube') return { mat: std({ map: canvasTex(128, 128, (g, w, h) => {
-    g.fillStyle = col; g.fillRect(0, 0, w, h); g.strokeStyle = 'rgba(90,60,20,.25)';
-    for (let i = 0; i < w; i += 6) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i, h); g.stroke(); }
-    g.fillStyle = '#e6cfa0'; g.fillRect(w * .4, 0, w * .2, h); g.strokeStyle = '#7a5a2a'; g.lineWidth = 4; g.strokeRect(2, 2, w - 4, h - 4);
-    g.fillStyle = '#7a5a2a'; g.font = 'bold 30px sans-serif'; g.fillText('↑', 12, 40); g.fillText('↑', 92, 40);
-  }) }) };
-  if (shape === 'tall') { const side = std({ map: canvasTex(128, 256, (g, w, h) => {
-      g.fillStyle = '#fff'; g.fillRect(0, 0, w, h); g.fillStyle = '#2f6fed'; g.fillRect(0, 0, w, 60); g.fillRect(0, h - 26, w, 26);
-      g.fillStyle = '#222'; for (const [x, y, r] of [[36, 120, 20], [90, 150, 26], [50, 196, 16]]) { g.beginPath(); g.ellipse(x, y, r, r * .8, .4, 0, 7); g.fill(); }
-      g.fillStyle = '#fff'; g.font = 'bold 30px sans-serif'; g.textAlign = 'center'; g.fillText('ミルク', w / 2, 42);
-    }) }), cap = std({ color: '#e9eef5' });
-    return { mat: [side, side, cap, cap, side, side] }; }
-  if (shape === 'plank') { const top = std({ map: canvasTex(384, 128, (g, w, h) => {
-      g.fillStyle = col; g.fillRect(0, 0, w, h); g.strokeStyle = '#333'; g.fillStyle = '#333'; g.font = 'bold 26px sans-serif'; g.textAlign = 'center';
-      for (let i = 0; i <= 30; i++) { const x = 12 + i * 12; g.lineWidth = i % 5 ? 2 : 4; g.beginPath(); g.moveTo(x, 0); g.lineTo(x, i % 5 ? 26 : 44); g.stroke();
-        if (i % 10 === 0) g.fillText(String(i), x + (i === 0 ? 8 : i === 30 ? -10 : 0), 84); }
-    }) }), side = std({ color: col });
-    return { mat: [side, side, top, top, side, side] }; }
-  if (shape === 'cyl') { const side = std({ map: canvasTex(512, 128, (g, w, h) => {
-      g.fillStyle = col; g.fillRect(0, 0, w, h); g.fillStyle = '#fff'; g.fillRect(0, 34, w, 60);
-      g.fillStyle = col; g.font = 'bold 44px sans-serif'; g.textAlign = 'center'; g.fillText('トマト', w * .5, 80); g.fillText('トマト', w * .02, 80); g.fillText('トマト', w * .98, 80);
-    }), roughness: 0.4 }), cap = std({ color: '#c9ced6', roughness: 0.35, metalness: 0.3 });
-    return { mat: [side, cap, cap] }; }
-  const front = std({ map: canvasTex(128, 128, (g, w, h) => {
-    g.fillStyle = '#fff'; g.fillRect(0, 0, w, h); g.fillStyle = '#1d1d1d'; g.fillRect(w * .28, h * .55, w * .44, h * .45);
-    g.fillStyle = 'rgba(0,0,0,.06)'; for (let i = 0; i < 60; i++) g.fillRect(rnd(0, w), rnd(0, h), 3, 2);
-  }) });
-  return { mat: [front, front, std({ color: '#f6f6f2' })] };
+  return { mat: std({ color: col }) };
 }
 function makeMesh(shape, skin) {
   const key = skin + shape; const m = matCache[key] || (matCache[key] = buildMat(skin, shape));
@@ -681,13 +654,12 @@ function renderMenu() {
   openPanel(`<h2>あそびかたを えらぼう</h2>
   <div class="row modes">
     <button data-act="mode" data-v="solo" class="${G.mode === 'solo' ? 'sel' : ''}">ひとりで</button>
-    <button data-act="mode" data-v="coop" class="${G.mode === 'coop' ? 'sel' : ''}">ふたりで<br>${R('協力', 'きょうりょく')}</button>
     <button data-act="mode" data-v="vs" class="${vs ? 'sel' : ''}">ふたりで<br>${R('対戦', 'たいせん')}</button>
   </div>
   <div class="opt"><span>${R('投', 'な')}げる ${R('回数', 'かいすう')}</span>${seg('balls', L.balls, 'なんかいでも', CFG.limitBalls + 'かい')}</div>
   <div class="opt"><span>${R('積', 'つ')}む ${R('数', 'かず')}</span>${seg('count', L.count, 'いくつでも', CFG.limitPieces + 'こ')}</div>
   <div class="opt"><span>${R('積', 'つ')}む ${R('時間', 'じかん')}</span>${seg('time', L.time, 'ゆっくり', CFG.buildTime + 'びょう')}</div>
-  <p class="menunote">${vs ? `${R('対戦', 'たいせん')}は ${CFG.limitPieces}こ ぜんぶ ${R('積', 'つ')}んで、${CFG.limitBalls}かいで しょうぶ！` : G.mode === 'coop' ? `ひとりが ${R('積', 'つ')}んで、もう ひとりが こわす。こうたいで 2かい あそぶよ` : `すきに ${R('積', 'つ')}んで、すきに こわそう`}</p>
+  <p class="menunote">${vs ? `${CFG.limitPieces}こ ぜんぶ ${R('積', 'つ')}んで、ボール ${CFG.limitBalls}かいで しょうぶ！ くずれにくく ${R('積', 'つ')}もう` : `すきに ${R('積', 'つ')}んで、すきに こわそう`}</p>
   <button class="big" data-act="go">スタート</button>`);
 }
 panel.addEventListener('click', e => {
@@ -863,10 +835,16 @@ function startSmash() {
   loadBall(); hud();
 }
 function loadBall() {
-  if (G.mode === 'vs') G.ballType = CFG.vsBalls[Math.min(G.thrown, CFG.vsBalls.length - 1)];
+  if (G.mode === 'vs') G.ballType = CFG.vs.balls[Math.min(G.thrown, CFG.vs.balls.length - 1)];
   hideBalls(); G.ball = null; G.ready = true; G.pulling = false; G.aim = null;
   const m = ballMeshes[G.ballType]; m.visible = true; m.position.set(L.x, L.y, L.z); m.quaternion.identity();
+  m.scale.setScalar(ballSpec(G.ballType).r / CFG.balls[G.ballType].r);
   renderBallSel();
+}
+// 玉の大きさ・重さ（対戦のボールだけ CFG.vs の値を使う）
+function ballSpec(type) {
+  const B = CFG.balls[type];
+  return G.mode === 'vs' && type === 'ball' ? Object.assign({}, B, { r: CFG.vs.ballR, mass: CFG.vs.ballMass }) : B;
 }
 function aimFromPull(px, py) {
   const T = CFG.throw, ref = Math.max(110, T.pull * (G.phone ? Math.max(innerWidth, innerHeight) * 0.6 : innerHeight));
@@ -892,7 +870,7 @@ function showAim() {
   }
 }
 function launch(a) {
-  const B = CFG.balls[G.ballType];
+  const B = ballSpec(G.ballType);
   const body = new CANNON.Body({ mass: B.mass, material: M.ball, linearDamping: 0.01, angularDamping: 0.2 });
   body.addShape(new CANNON.Sphere(B.r)); setPose(body, L.x, L.y, L.z);
   body.velocity.copy(aimVelocity(a)); body.angularVelocity.set(-8, 0, 0);
