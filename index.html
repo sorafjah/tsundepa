@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>つんで パッカーン！</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+html,body{margin:0;height:100%;overflow:hidden;background:#8fd0ff;font-family:'BIZ UDPGothic',sans-serif;touch-action:manipulation;overscroll-behavior:none;color:#222}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+button{font-family:inherit;font-weight:700;color:#222;border:3px solid #333;border-radius:14px;background:#fff;min-width:48px;min-height:48px;font-size:18px;cursor:pointer;touch-action:manipulation;padding:4px 10px}
+button:active{transform:scale(.95)}
+button:disabled{opacity:.4}
+rt{font-size:.5em;font-weight:400}
+.hide{display:none!important}
+#top{position:fixed;top:8px;left:8px;right:8px;display:flex;gap:8px;align-items:flex-start;pointer-events:none}
+#who,#info{background:rgba(255,255,255,.92);border:3px solid #333;border-radius:14px;padding:6px 14px;font-size:22px;font-weight:700;min-height:48px;display:flex;align-items:center;gap:6px}
+#info{margin-left:auto}
+#info.bump{animation:bump .25s}
+@keyframes bump{50%{transform:scale(1.25)}}
+#helpBtn{pointer-events:auto;border-radius:50%;width:52px;height:52px;font-size:26px;padding:0;background:#ffe36e}
+#msg{position:fixed;left:0;right:0;top:20%;text-align:center;font-size:54px;font-weight:700;color:#fff;-webkit-text-stroke:2px #333;paint-order:stroke fill;text-shadow:0 4px 0 #333;pointer-events:none;opacity:0;transition:opacity .25s}
+#msg.on{opacity:1}
+#hint{position:fixed;left:0;right:0;bottom:120px;text-align:center;font-size:24px;font-weight:700;pointer-events:none}
+#hint span{background:rgba(255,255,255,.9);border-radius:12px;padding:6px 14px;border:2px solid #333}
+#side{position:fixed;left:8px;top:74px;display:flex;flex-direction:column;gap:8px}
+#side button{width:108px;min-height:60px;font-size:14px;white-space:nowrap;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
+#side button b{font-size:24px}
+.camrow{display:flex;gap:4px;align-items:center;justify-content:space-between;width:108px}
+.camrow button{width:52px!important;min-width:44px;min-height:48px!important;padding:0;font-size:20px}
+.camlab{font-size:12px;font-weight:700;text-align:center;background:rgba(255,255,255,.85);border-radius:8px;width:108px}
+#bDone{position:fixed;right:10px;bottom:10px;width:140px;height:96px;font-size:26px;background:#5fd068}
+#tray{position:fixed;left:50%;bottom:8px;transform:translateX(-50%);background:rgba(255,255,255,.92);border:3px solid #333;border-radius:16px;padding:6px;display:flex;flex-direction:column;gap:6px;max-width:calc(100vw - 320px)}
+#tabs,#shapes{display:flex;gap:6px;justify-content:center}
+#tabs button{min-height:44px;font-size:16px;flex:1;white-space:nowrap}
+#tabs button.sel{background:#333;color:#fff}
+#shapes button{width:84px;height:84px;padding:2px;font-size:12px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#shapes button.sel{background:#ffe36e;border-width:5px}
+#smashUI #ballSel{position:fixed;left:50%;bottom:8px;transform:translateX(-50%);display:flex;gap:8px;background:rgba(255,255,255,.92);border:3px solid #333;border-radius:16px;padding:6px}
+#ballSel button{width:116px;height:84px;font-size:15px;white-space:nowrap;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+#ballSel button.sel{background:#ffe36e;border-width:5px}
+#bEnd{position:fixed;right:10px;bottom:10px;width:120px;height:72px;font-size:24px;background:#ffb0a8}
+.dot{display:inline-block;width:30px;height:30px;border-radius:50%;border:3px solid #333}
+#overlay{position:fixed;inset:0;background:rgba(20,40,70,.45);display:flex;align-items:center;justify-content:center;padding:10px}
+#panel{background:#fffdf4;border:4px solid #333;border-radius:24px;padding:16px 22px;max-width:860px;width:100%;max-height:100%;text-align:center;overflow:hidden}
+#panel h1{font-size:40px;margin:4px 0 10px}
+#panel h2{font-size:28px;margin:4px 0 10px}
+#panel p{font-size:20px;margin:6px 0;line-height:1.7}
+.steps{display:flex;gap:10px;justify-content:center;margin:8px 0}
+.step{flex:1;background:#eaf5ff;border:3px solid #333;border-radius:16px;padding:8px}
+.step p{font-size:17px!important;line-height:1.8!important}
+.step b{font-size:22px}
+.big{font-size:28px;min-height:64px;padding:8px 36px;background:#5fd068;margin-top:10px}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+.modes button{flex:1;min-height:76px;font-size:21px;line-height:1.5}
+.sel{background:#ffe36e}
+.modes button.sel{border-width:5px}
+.opt{display:flex;align-items:center;gap:10px;justify-content:center;margin:6px 0;font-size:20px;font-weight:700}
+.opt>span{width:190px;text-align:right}
+.opt button{min-width:150px;min-height:50px;font-size:19px}
+.opt button.sel{border-width:5px}
+.score{font-size:76px;font-weight:700;line-height:1.1}
+.stars{font-size:48px;letter-spacing:6px}
+.pl{display:inline-block;padding:2px 12px;border-radius:12px;color:#fff;font-weight:700}
+.vs{display:flex;gap:14px;justify-content:center;align-items:stretch;margin:8px 0}
+.vs>div{flex:1;border:4px solid #333;border-radius:18px;padding:8px;font-size:22px;font-weight:700}
+.vs .n{font-size:60px}
+#ver{position:fixed;left:6px;bottom:4px;font-size:11px;color:#333;opacity:.7;pointer-events:none}
+@media (max-height:520px){#panel h1{font-size:28px}#panel p{font-size:16px}.step p{font-size:14px!important}.big{min-height:52px;font-size:22px}.score{font-size:52px}#shapes button{width:64px;height:64px}#side button{min-height:48px}}
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/",
+    "cannon-es": "https://cdn.jsdelivr.net/npm/cannon-es@0.20.0/dist/cannon-es.js"
+  }
+}
+</script>
+</head>
+<body>
+<!-- build: 2026-11-14c -->
+<canvas id="c"></canvas>
+<div id="top">
+  <div id="who"></div>
+  <div id="info"></div>
+  <button id="helpBtn" aria-label="せつめい">？</button>
+</div>
+<div id="msg"></div>
+<div id="hint" class="hide"><span></span></div>
+<div id="buildUI" class="hide">
+  <div id="side">
+    <button id="bRot"><b>⟳</b>むきを かえる</button>
+    <button id="bUndo"><b>↩</b>1こ もどす</button>
+    <button id="bAuto"><b>★</b>おまかせ</button>
+    <div class="camrow"><button id="bCamL">◀</button><button id="bCamR">▶</button></div>
+    <div class="camlab">カメラを まわす</div>
+  </div>
+  <div id="tray"><div id="tabs"></div><div id="shapes"></div></div>
+  <button id="bDone">できた！</button>
+</div>
+<div id="smashUI" class="hide">
+  <div id="ballSel"></div>
+  <button id="bEnd">おわる</button>
+</div>
+<div id="overlay"><div id="panel"></div></div>
+<div id="ver"></div>
+
+<script type="module">
+import * as THREE from 'three';
+import * as CANNON from 'cannon-es';
+
+/* ================= 設定（ここの数値だけ直せば調整できます） ================= */
+const CFG = {
+  version: 'v2026-11-14c',
+  table: { half: 1.1, top: 1.2 },      // 台の半分の幅・台の上面の高さ
+  grid: 0.25,                           // 置くときに吸いつく間隔
+  gravity: -18,
+  maxPieces: 60,                        // 制限なしのときの上限（iPadの重さ対策）
+  limitPieces: 20,                      // 「20こ」制限
+  buildTime: 60,                        // 「60びょう」制限
+  limitBalls: 3,                        // 「3かい」制限
+  vsBalls: ['ball', 'ball', 'bomb'],    // 対戦で投げる順番
+  maxHeight: 6,                         // 台の上にこれ以上は積めない
+  pieceDensity: 3.0,                    // パーツの重さ（小さいほど派手に飛ぶ）
+  buildDamp: [0.3, 0.6],                // 積むときの動きにくさ（移動・回転）＝崩れにくくする補正
+  smashDamp: [0.02, 0.06],              // 壊すときの動きにくさ
+  fingerOffset: 34,                     // タッチのとき指の少し上に置く（px）
+  launcher: { x: 0, y: 1.35, z: 8.4 },  // 玉の置き場所（手前・低め）
+  throw: { vMin: 9, vMax: 13, pitchMin: 14, pitchMax: 28, yawMax: 24, pull: 0.3, minPower: 0.12 },
+  aimDots: 4,                           // ねらいの点線の長さ（1こ＝0.05秒ぶん。4こで出だしだけ）
+  ballGravity: -6,                      // 玉だけ重力を弱くして、ゆっくり飛ばす（台まで約0.8〜1秒）
+  balls: {
+    ball: { r: 0.2,  mass: 5,  name: 'ボール' },
+    iron: { r: 0.27, mass: 22, name: 'てっきゅう' },
+    bomb: { r: 0.22, mass: 4,  name: 'ばくだん', radius: 2.8, power: 15 },
+  },
+  settle: { afterHit: 1.2, noHit: 2.6, max: 7 },
+  fallBelow: 0.25,                      // 台の上面よりこれだけ下がったら「落ちた」
+};
+
+/* ================= 便利関数 ================= */
+const $ = id => document.getElementById(id);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, t) => a + (b - a) * t;
+const rnd = (a, b) => a + Math.random() * (b - a);
+const P = [
+  { name: 'あかさん', col: '#d93a3f', mark: '●' },
+  { name: 'あおさん', col: '#2f6fed', mark: '■' },
+];
+const pl = i => `<span class="pl" style="background:${P[i].col}">${P[i].mark} ${P[i].name}</span>`;
+
+/* ================= ゲーム状態 ================= */
+const G = {
+  screen: 'help', view: 'orbit', paused: true, frames: 0, elapsed: 0,
+  mode: 'solo', opts: { balls: false, count: false, time: false },
+  round: 0, builder: 0, smasher: 0, scores: [0, 0], totals: [0, 0],
+  skin: 'blocks', shape: 'cube', ori: { cube: 0, tall: 0, plank: 0, cyl: 0, tri: 0 },
+  timeLeft: 0, camAng: 0.6, camAngT: 0.6, autoIdx: 0, snapshot: null,
+  total: 0, fallen: 0, ballsLeft: 0, thrown: 0, ballType: 'ball',
+  ball: null, ready: false, pulling: false, aim: null, endTimer: 0, perfect: false,
+  firstHelp: true, hintDone: false,
+};
+const pieces = [];
+function lim() {
+  const vs = G.mode === 'vs';
+  return { balls: vs || G.opts.balls, count: vs || G.opts.count, time: !vs && G.opts.time, must: vs };
+}
+const maxCount = () => lim().count ? CFG.limitPieces : CFG.maxPieces;
+
+/* ================= 音（Web Audio 合成） ================= */
+let AC = null, master = null, noiseBuf = null, lastClack = 0;
+function audioInit() {
+  try {
+    if (!AC) {
+      AC = new (window.AudioContext || window.webkitAudioContext)();
+      master = AC.createGain(); master.gain.value = 0.55; master.connect(AC.destination);
+      noiseBuf = AC.createBuffer(1, AC.sampleRate, AC.sampleRate);
+      const d = noiseBuf.getChannelData(0);
+      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    if (AC.state !== 'running') AC.resume();
+  } catch (e) { AC = null; }
+}
+function tone(f, dur, type = 'sine', vol = 0.3, slide = 0, when = 0) {
+  if (!AC) return;
+  const t = AC.currentTime + when, o = AC.createOscillator(), g = AC.createGain();
+  o.type = type; o.frequency.setValueAtTime(f, t);
+  if (slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, f + slide), t + dur);
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + 0.02);
+}
+function noise(dur, vol, f0, f1, type = 'bandpass', when = 0) {
+  if (!AC) return;
+  const t = AC.currentTime + when, s = AC.createBufferSource(), fl = AC.createBiquadFilter(), g = AC.createGain();
+  s.buffer = noiseBuf; s.loop = true; fl.type = type;
+  fl.frequency.setValueAtTime(f0, t); fl.frequency.exponentialRampToValueAtTime(Math.max(30, f1), t + dur);
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  s.connect(fl); fl.connect(g); g.connect(master); s.start(t); s.stop(t + dur + 0.02);
+}
+const SFX = {
+  tap()   { tone(660, 0.06, 'triangle', 0.2); },
+  place() { tone(420, 0.09, 'triangle', 0.3, 260); },
+  pop()   { tone(360, 0.12, 'square', 0.12, -200); },
+  whoosh(){ noise(0.3, 0.35, 500, 3000); },
+  kaan(v, heavy) { const k = clamp(v, 0.4, 1.2);   // 木がはじけるような「ドカッ・ガラッ」
+            tone(heavy ? 95 : 150, 0.22, 'sine', 0.9 * k, heavy ? -50 : -80);
+            tone(heavy ? 230 : 330, 0.09, 'triangle', 0.5 * k, -150);
+            noise(0.18, 0.9 * k, 1400, 250, 'lowpass');
+            noise(0.06, 0.5 * k, 900, 500); },
+  clack(v){ if (!AC || AC.currentTime - lastClack < 0.045) return; lastClack = AC.currentTime;
+            const k = clamp(v / 8, 0.15, 1);
+            tone(rnd(260, 900), 0.06, 'triangle', 0.3 * k, -100); noise(0.04, 0.25 * k, 1800, 700); },
+  boom()  { noise(0.9, 1.0, 900, 50, 'lowpass'); tone(80, 0.7, 'sine', 0.9, -45); noise(0.2, 0.5, 3000, 800); },
+  count() { tone(980, 0.07, 'sine', 0.22); },
+  tick()  { tone(1200, 0.05, 'square', 0.1); },
+  fanfare(){ [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.28, 'triangle', 0.3, 0, i * 0.13)); tone(1047, 0.6, 'triangle', 0.3, 0, 0.55); },
+  perfect(){ [784, 988, 1175, 1568, 1976].forEach((f, i) => tone(f, 0.25, 'triangle', 0.3, 0, i * 0.09)); },
+  turn()  { tone(587, 0.15, 'triangle', 0.3); tone(880, 0.25, 'triangle', 0.3, 0, 0.15); },
+};
+
+/* ================= 描画の準備 ================= */
+const canvas = $('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 220);
+const camPos = new THREE.Vector3(4, 4.6, 6), camLook = new THREE.Vector3(0, 2, 0);
+
+function canvasTex(w, h, draw) {
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  draw(c.getContext('2d'), w, h);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+scene.background = canvasTex(8, 256, (g, w, h) => {
+  const gr = g.createLinearGradient(0, 0, 0, h);
+  gr.addColorStop(0, '#4aa8f0'); gr.addColorStop(0.6, '#bfe6ff'); gr.addColorStop(1, '#eafaff');
+  g.fillStyle = gr; g.fillRect(0, 0, w, h);
+});
+scene.fog = new THREE.Fog(0xcfeeff, 40, 110);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x9fc77a, 1.25));
+const sun = new THREE.DirectionalLight(0xffffff, 1.7);
+sun.position.set(5, 11, 7); sun.castShadow = true;
+sun.shadow.mapSize.set(1024, 1024);
+Object.assign(sun.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8, near: 1, far: 34 });
+sun.shadow.bias = -0.0015;
+scene.add(sun);
+
+// 地面
+const grassTex = canvasTex(128, 128, (g, w, h) => {
+  g.fillStyle = '#7ccf6a'; g.fillRect(0, 0, w, h);
+  g.fillStyle = '#6fc25e'; g.fillRect(0, 0, w / 2, h / 2); g.fillRect(w / 2, h / 2, w / 2, h / 2);
+});
+grassTex.wrapS = grassTex.wrapT = THREE.RepeatWrapping; grassTex.repeat.set(40, 40);
+const groundMesh = new THREE.Mesh(new THREE.CircleGeometry(90, 48), new THREE.MeshStandardMaterial({ map: grassTex, roughness: 1 }));
+groundMesh.rotation.x = -Math.PI / 2; groundMesh.receiveShadow = true; scene.add(groundMesh);
+
+// 台
+const woodTex = canvasTex(128, 128, (g, w, h) => {
+  g.fillStyle = '#fff'; g.fillRect(0, 0, w, h);
+  for (let i = 0; i < 26; i++) { g.strokeStyle = `rgba(90,60,30,${rnd(0.05, 0.16)})`; g.lineWidth = rnd(1, 3);
+    const y = rnd(0, h); g.beginPath(); g.moveTo(0, y); g.bezierCurveTo(w * 0.3, y + rnd(-5, 5), w * 0.7, y + rnd(-5, 5), w, y); g.stroke(); }
+});
+const TB = CFG.table;
+const tableMesh = new THREE.Mesh(new THREE.BoxGeometry(TB.half * 2, TB.top, TB.half * 2),
+  new THREE.MeshStandardMaterial({ map: woodTex, color: 0xb9895a, roughness: 0.8 }));
+tableMesh.position.y = TB.top / 2; tableMesh.castShadow = tableMesh.receiveShadow = true; scene.add(tableMesh);
+const rim = new THREE.Mesh(new THREE.BoxGeometry(TB.half * 2 + 0.12, 0.1, TB.half * 2 + 0.12),
+  new THREE.MeshStandardMaterial({ map: woodTex, color: 0xe9c48f, roughness: 0.7 }));
+rim.position.y = TB.top - 0.051; rim.receiveShadow = true; scene.add(rim);
+
+// 木（かざり）
+{
+  const trunk = new THREE.CylinderGeometry(0.25, 0.3, 1.6, 8), leaf = new THREE.ConeGeometry(1.5, 3.4, 9);
+  const tm = new THREE.MeshStandardMaterial({ color: 0x8a5a33 }), lm = new THREE.MeshStandardMaterial({ color: 0x3f9a4a });
+  for (let i = 0; i < 12; i++) {
+    const a = i / 12 * Math.PI * 2 + 0.3, r = 17 + (i % 3) * 5;
+    const t = new THREE.Mesh(trunk, tm), l = new THREE.Mesh(leaf, lm);
+    t.position.set(Math.sin(a) * r, 0.8, Math.cos(a) * r - 6); l.position.copy(t.position); l.position.y = 3.2;
+    scene.add(t, l);
+  }
+}
+
+// パチンコ（ゴムで飛ばす台）
+const L = CFG.launcher;
+const sling = new THREE.Group();
+{
+  const pm = new THREE.MeshStandardMaterial({ color: 0x8a5a33, roughness: 0.8 });
+  for (const sx of [-0.55, 0.55]) {
+    const p = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.07, L.y + 0.3, 8), pm);
+    p.position.set(L.x + sx, (L.y + 0.3) / 2, L.z); p.castShadow = true; sling.add(p);
+  }
+}
+const bandGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()]);
+const band = new THREE.Line(bandGeo, new THREE.LineBasicMaterial({ color: 0x4a2a12 }));
+band.frustumCulled = false; sling.add(band);
+sling.visible = false; scene.add(sling);
+
+// ねらいの点線
+const dots = [];
+{
+  const dg = new THREE.SphereGeometry(0.06, 8, 6), dm = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  for (let i = 0; i < CFG.aimDots; i++) { const d = new THREE.Mesh(dg, dm); d.visible = false; scene.add(d); dots.push(d); }
+}
+
+/* ================= 物理の準備 ================= */
+const world = new CANNON.World({ gravity: new CANNON.Vec3(0, CFG.gravity, 0) });
+world.allowSleep = true;
+world.solver.iterations = 14;
+const M = { piece: new CANNON.Material('piece'), ground: new CANNON.Material('ground'), table: new CANNON.Material('table'), ball: new CANNON.Material('ball') };
+const cm = (a, b, friction, restitution) => world.addContactMaterial(new CANNON.ContactMaterial(a, b, { friction, restitution }));
+cm(M.piece, M.piece, 0.55, 0.05); cm(M.piece, M.table, 0.6, 0.05); cm(M.piece, M.ground, 0.6, 0.25);
+cm(M.ball, M.piece, 0.3, 0.15); cm(M.ball, M.table, 0.4, 0.35); cm(M.ball, M.ground, 0.5, 0.45);
+// 玉だけ重力を弱くする（物理の内部ステップごとに上向きの力を足す）
+world.addEventListener('preStep', () => {
+  const b = G.ball && !G.ball.done && !G.ball.hit ? G.ball.body : null;
+  if (b) b.force.y += b.mass * (CFG.ballGravity - CFG.gravity);
+});
+const groundBody = new CANNON.Body({ mass: 0, material: M.ground });
+groundBody.addShape(new CANNON.Plane()); groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0); world.addBody(groundBody);
+const tableBody = new CANNON.Body({ mass: 0, material: M.table, position: new CANNON.Vec3(0, TB.top / 2, 0) });
+tableBody.addShape(new CANNON.Box(new CANNON.Vec3(TB.half, TB.top / 2, TB.half))); world.addBody(tableBody);
+
+/* ================= パーツ（形5種類 × 見た目3セット） ================= */
+const qAxis = (x, y, z) => { const q = new CANNON.Quaternion(); q.setFromAxisAngle(new CANNON.Vec3(x, y, z), Math.PI / 2); return q; };
+const QI = new CANNON.Quaternion(), QX = qAxis(1, 0, 0), QY = qAxis(0, 1, 0), QZ = qAxis(0, 0, 1);
+const QZ2 = new CANNON.Quaternion(); QZ2.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), Math.PI);   // さかさま
+const QZ2Y = QY.mult(QZ2);
+const boxV = (x, y, z) => { const o = []; for (const a of [-1, 1]) for (const b of [-1, 1]) for (const c of [-1, 1]) o.push([a * x / 2, b * y / 2, c * z / 2]); return o; };
+// 三角：重心を原点にした三角柱（底辺0.5・高さ0.5・奥行0.5）
+const TRI_V = [[-.25, -1 / 6, .25], [.25, -1 / 6, .25], [0, 1 / 3, .25], [-.25, -1 / 6, -.25], [.25, -1 / 6, -.25], [0, 1 / 3, -.25]];
+const TRI_F = [[0, 1, 2], [3, 5, 4], [0, 3, 4, 1], [1, 4, 5, 2], [0, 2, 5, 3]];
+const SHAPES = {
+  cube:  { dims: [.5, .5, .5],  vol: .125,  oris: [QI],         verts: boxV(.5, .5, .5) },
+  tall:  { dims: [.5, 1, .5],   vol: .25,   oris: [QI, QZ, QX], verts: boxV(.5, 1, .5) },
+  plank: { dims: [1.5, .2, .5], vol: .15,   oris: [QI, QY, QZ], verts: boxV(1.5, .2, .5) },
+  cyl:   { vol: .098,  oris: [QI, QZ, QX], verts: boxV(.5, .5, .5) },
+  tri:   { vol: .0625, oris: [QI, QY, QZ2, QZ2Y], verts: TRI_V },   // ▲ → ▲(よこ) → ▼ → ▼(よこ)
+};
+const SHAPE_KEYS = ['cube', 'tall', 'plank', 'cyl', 'tri'];
+const extCache = {};
+function extent(shape, ori) {
+  const key = shape + ori; if (extCache[key]) return extCache[key];
+  const q = SHAPES[shape].oris[ori], v = new CANNON.Vec3(), o = new CANNON.Vec3();
+  let hx = 0, hz = 0, bot = 0, top = 0;
+  for (const p of SHAPES[shape].verts) { v.set(p[0], p[1], p[2]); q.vmult(v, o);
+    hx = Math.max(hx, Math.abs(o.x)); hz = Math.max(hz, Math.abs(o.z)); bot = Math.max(bot, -o.y); top = Math.max(top, o.y); }
+  return (extCache[key] = { hx, hz, bot, top });
+}
+function makeShape(shape) {
+  const S = SHAPES[shape];
+  if (S.dims) return new CANNON.Box(new CANNON.Vec3(S.dims[0] / 2, S.dims[1] / 2, S.dims[2] / 2));
+  if (shape === 'cyl') return new CANNON.Cylinder(0.25, 0.25, 0.5, 10);
+  return new CANNON.ConvexPolyhedron({ vertices: TRI_V.map(p => new CANNON.Vec3(p[0], p[1], p[2])), faces: TRI_F.map(f => f.slice()) });
+}
+
+// 形（Three.js）
+const GEO = {};
+for (const k of ['cube', 'tall', 'plank']) GEO[k] = new THREE.BoxGeometry(...SHAPES[k].dims);
+GEO.cyl = new THREE.CylinderGeometry(0.25, 0.25, 0.5, 24); GEO.cyl.rotateY(Math.PI);
+{
+  const pos = [], uv = [];
+  const tri = (a, b, c, ua, ub, uc) => { for (const [i, u] of [[a, ua], [b, ub], [c, uc]]) { pos.push(...TRI_V[i]); uv.push(...u); } };
+  tri(0, 1, 2, [0, 0], [1, 0], [.5, 1]);
+  tri(3, 5, 4, [1, 0], [.5, 1], [0, 0]);
+  for (const f of [[0, 3, 4, 1], [1, 4, 5, 2], [0, 2, 5, 3]]) { tri(f[0], f[1], f[2], [0, 0], [1, 0], [1, 1]); tri(f[0], f[2], f[3], [0, 0], [1, 1], [0, 1]); }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.computeVertexNormals(); g.addGroup(0, 3, 0); g.addGroup(3, 3, 1); g.addGroup(6, 18, 2);
+  GEO.tri = g;
+}
+
+const SKINS = {
+  blocks: { label: 'つみき',     cols: { cube: '#e5484d', tall: '#3b82f6', plank: '#f5b301', cyl: '#22a35a', tri: '#f97316' },
+            names: { cube: 'しかく', tall: 'ながしかく', plank: 'いた', cyl: 'まる', tri: 'さんかく' } },
+  daily:  { label: 'にちようひん', cols: { cube: '#c79a5b', tall: '#f4f7fb', plank: '#ffd95a', cyl: '#d83a3a', tri: '#ffffff' },
+            names: { cube: 'だんボール', tall: 'ぎゅうにゅう', plank: 'ものさし', cyl: 'かん', tri: 'おにぎり' } },
+  chara:  { label: 'キャラ',     cols: { cube: '#ff8fb3', tall: '#7cc4ff', plank: '#7fe0b0', cyl: '#ffd84d', tri: '#b79cff' },
+            names: { cube: 'しかくん', tall: 'のっぽ', plank: 'ぺたくん', cyl: 'まるちゃん', tri: 'さんかくん' } },
+};
+const SKIN_KEYS = ['blocks', 'daily', 'chara'];
+const std = (o) => new THREE.MeshStandardMaterial(Object.assign({ roughness: 0.75 }, o));
+
+function faceTex(col, w, h, surprised, cx = 0.5, cy = 0.5, scale = 1) {
+  return canvasTex(w, h, (g) => {
+    g.fillStyle = col; g.fillRect(0, 0, w, h);
+    const s = Math.min(w, h) * scale, x = w * cx, y = h * cy;
+    if (surprised) {
+      for (const d of [-1, 1]) { g.fillStyle = '#fff'; g.beginPath(); g.arc(x + d * s * .2, y - s * .08, s * .13, 0, 7); g.fill();
+        g.strokeStyle = '#222'; g.lineWidth = s * .03; g.stroke();
+        g.fillStyle = '#222'; g.beginPath(); g.arc(x + d * s * .2, y - s * .08, s * .05, 0, 7); g.fill(); }
+      g.fillStyle = '#7a2230'; g.beginPath(); g.ellipse(x, y + s * .22, s * .1, s * .13, 0, 0, 7); g.fill();
+    } else {
+      for (const d of [-1, 1]) { g.fillStyle = '#222'; g.beginPath(); g.arc(x + d * s * .19, y - s * .06, s * .07, 0, 7); g.fill();
+        g.fillStyle = '#fff'; g.beginPath(); g.arc(x + d * s * .19 - s * .02, y - s * .085, s * .025, 0, 7); g.fill();
+        g.fillStyle = 'rgba(255,90,120,.45)'; g.beginPath(); g.arc(x + d * s * .32, y + s * .1, s * .07, 0, 7); g.fill(); }
+      g.strokeStyle = '#222'; g.lineWidth = s * .04; g.lineCap = 'round';
+      g.beginPath(); g.arc(x, y + s * .08, s * .13, 0.15 * Math.PI, 0.85 * Math.PI); g.stroke();
+    }
+  });
+}
+const matCache = {};
+function buildMat(skin, shape) {
+  const col = SKINS[skin].cols[shape];
+  if (skin === 'blocks') return { mat: std({ map: woodTex, color: col }) };
+  if (skin === 'chara') {
+    const body = std({ color: col });
+    const cfg = { cube: [128, 128, .5, .5, 1], tall: [128, 256, .5, .32, 1], plank: [384, 128, .5, .5, 1], cyl: [512, 128, .5, .5, 1], tri: [128, 128, .5, .66, .62] }[shape];
+    const n = std({ map: faceTex(col, cfg[0], cfg[1], false, cfg[2], cfg[3], cfg[4]) });
+    const s = std({ map: faceTex(col, cfg[0], cfg[1], true, cfg[2], cfg[3], cfg[4]) });
+    const slot = { cube: 4, tall: 4, plank: 2, cyl: 0, tri: 0 }[shape];
+    const arr = shape === 'cyl' || shape === 'tri' ? [body, body, body] : [body, body, body, body, body, body];
+    arr[slot] = n;
+    return { mat: arr, face: { slot, n, s } };
+  }
+  // にちようひん
+  if (shape === 'cube') return { mat: std({ map: canvasTex(128, 128, (g, w, h) => {
+    g.fillStyle = col; g.fillRect(0, 0, w, h); g.strokeStyle = 'rgba(90,60,20,.25)';
+    for (let i = 0; i < w; i += 6) { g.beginPath(); g.moveTo(i, 0); g.lineTo(i, h); g.stroke(); }
+    g.fillStyle = '#e6cfa0'; g.fillRect(w * .4, 0, w * .2, h); g.strokeStyle = '#7a5a2a'; g.lineWidth = 4; g.strokeRect(2, 2, w - 4, h - 4);
+    g.fillStyle = '#7a5a2a'; g.font = 'bold 30px sans-serif'; g.fillText('↑', 12, 40); g.fillText('↑', 92, 40);
+  }) }) };
+  if (shape === 'tall') { const side = std({ map: canvasTex(128, 256, (g, w, h) => {
+      g.fillStyle = '#fff'; g.fillRect(0, 0, w, h); g.fillStyle = '#2f6fed'; g.fillRect(0, 0, w, 60); g.fillRect(0, h - 26, w, 26);
+      g.fillStyle = '#222'; for (const [x, y, r] of [[36, 120, 20], [90, 150, 26], [50, 196, 16]]) { g.beginPath(); g.ellipse(x, y, r, r * .8, .4, 0, 7); g.fill(); }
+      g.fillStyle = '#fff'; g.font = 'bold 30px sans-serif'; g.textAlign = 'center'; g.fillText('ミルク', w / 2, 42);
+    }) }), cap = std({ color: '#e9eef5' });
+    return { mat: [side, side, cap, cap, side, side] }; }
+  if (shape === 'plank') { const top = std({ map: canvasTex(384, 128, (g, w, h) => {
+      g.fillStyle = col; g.fillRect(0, 0, w, h); g.strokeStyle = '#333'; g.fillStyle = '#333'; g.font = 'bold 26px sans-serif'; g.textAlign = 'center';
+      for (let i = 0; i <= 30; i++) { const x = 12 + i * 12; g.lineWidth = i % 5 ? 2 : 4; g.beginPath(); g.moveTo(x, 0); g.lineTo(x, i % 5 ? 26 : 44); g.stroke();
+        if (i % 10 === 0) g.fillText(String(i), x + (i === 0 ? 8 : i === 30 ? -10 : 0), 84); }
+    }) }), side = std({ color: col });
+    return { mat: [side, side, top, top, side, side] }; }
+  if (shape === 'cyl') { const side = std({ map: canvasTex(512, 128, (g, w, h) => {
+      g.fillStyle = col; g.fillRect(0, 0, w, h); g.fillStyle = '#fff'; g.fillRect(0, 34, w, 60);
+      g.fillStyle = col; g.font = 'bold 44px sans-serif'; g.textAlign = 'center'; g.fillText('トマト', w * .5, 80); g.fillText('トマト', w * .02, 80); g.fillText('トマト', w * .98, 80);
+    }), roughness: 0.4 }), cap = std({ color: '#c9ced6', roughness: 0.35, metalness: 0.3 });
+    return { mat: [side, cap, cap] }; }
+  const front = std({ map: canvasTex(128, 128, (g, w, h) => {
+    g.fillStyle = '#fff'; g.fillRect(0, 0, w, h); g.fillStyle = '#1d1d1d'; g.fillRect(w * .28, h * .55, w * .44, h * .45);
+    g.fillStyle = 'rgba(0,0,0,.06)'; for (let i = 0; i < 60; i++) g.fillRect(rnd(0, w), rnd(0, h), 3, 2);
+  }) });
+  return { mat: [front, front, std({ color: '#f6f6f2' })] };
+}
+function makeMesh(shape, skin) {
+  const key = skin + shape; const m = matCache[key] || (matCache[key] = buildMat(skin, shape));
+  const mesh = new THREE.Mesh(GEO[shape], m.face ? m.mat.slice() : m.mat);
+  mesh.castShadow = mesh.receiveShadow = true;
+  return { mesh, face: m.face || null };
+}
+
+function setPose(b, x, y, z, q) {
+  b.position.set(x, y, z); b.previousPosition.set(x, y, z); b.interpolatedPosition.set(x, y, z);
+  if (q) { b.quaternion.copy(q); b.previousQuaternion.copy(q); b.interpolatedQuaternion.copy(q); }
+  b.velocity.setZero(); b.angularVelocity.setZero();
+}
+function addPiece(shape, skin, ori, x, y, z, quat) {
+  const S = SHAPES[shape];
+  const body = new CANNON.Body({ mass: S.vol * CFG.pieceDensity, material: M.piece, allowSleep: true,
+    sleepSpeedLimit: 0.25, sleepTimeLimit: 0.4, linearDamping: CFG.buildDamp[0], angularDamping: CFG.buildDamp[1] });
+  body.addShape(makeShape(shape));
+  setPose(body, x, y, z, quat || S.oris[ori]);
+  const { mesh, face } = makeMesh(shape, skin);
+  const p = { body, mesh, face, shape, skin, ori, fallen: false };
+  body.piece = p;
+  body.addEventListener('collide', e => {
+    if (G.screen !== 'smash' && G.screen !== 'smashEnd') return;
+    const v = Math.abs(e.contact.getImpactVelocityAlongNormal());
+    if (v > 1.6) SFX.clack(v);
+  });
+  world.addBody(body); scene.add(mesh); pieces.push(p); syncMesh(p);
+  return p;
+}
+function removePiece(p) {
+  const i = pieces.indexOf(p); if (i >= 0) pieces.splice(i, 1);
+  world.removeBody(p.body); scene.remove(p.mesh);
+  for (const o of pieces) o.body.wakeUp();
+}
+function clearPieces() { while (pieces.length) { const p = pieces.pop(); world.removeBody(p.body); scene.remove(p.mesh); } G.fallen = 0; }
+function syncMesh(p) { p.mesh.position.copy(p.body.interpolatedPosition); p.mesh.quaternion.copy(p.body.interpolatedQuaternion); }
+function setDamping(d) { for (const p of pieces) { p.body.linearDamping = d[0]; p.body.angularDamping = d[1]; } }
+
+/* ================= おまかせの積み方 ================= */
+function presetList(i, n) {
+  const Lst = [], add = (s, o, x, y, z) => Lst.push([s, o, x, y, z]);
+  const quad = [[-.25, -.25], [.25, -.25], [-.25, .25], [.25, .25]];
+  if (i === 0) {           // タワー
+    for (let l = 0; l < 4; l++) for (const [x, z] of quad) add('cube', 0, x, l * .5, z);
+    for (const [x, z] of quad) add('tri', 0, x, 2, z);
+  } else if (i === 1) {    // ピラミッド
+    let y = 0;
+    for (const k of (n >= 31 ? [4, 3, 2, 1] : [3, 2, 1])) {
+      for (let a = 0; a < k; a++) for (let b = 0; b < k; b++) add('cube', 0, (a - (k - 1) / 2) * .5, y, (b - (k - 1) / 2) * .5);
+      y += .5;
+    }
+    add('tri', 0, 0, y, 0);
+  } else {                 // おしろ
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) add('tall', 0, sx * .6, 0, sz * .6);
+    for (const sz of [-1, 1]) add('plank', 0, 0, 1.0, sz * .6);
+    for (const sx of [-1, 1]) add('plank', 1, sx * .5, 1.2, 0);
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) add('cube', 0, sx * .5, 1.4, sz * .5);
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) add('tri', 0, sx * .5, 1.9, sz * .5);
+    for (let l = 0; l < 3; l++) add('cyl', 0, 0, l * .5, 0);
+    add('tri', 0, 0, 1.5, 0);
+  }
+  return Lst.slice(0, n);
+}
+function applyPreset(i) {
+  clearPieces();
+  for (const [s, o, x, y, z] of presetList(i, maxCount())) {
+    const e = extent(s, o);
+    const p = addPiece(s, G.skin, o, x, TB.top + y + e.bot + 0.003 * (1 + y * 2), z);
+    p.body.sleep();
+  }
+}
+
+/* ================= 玉 ================= */
+const ballMeshes = {};
+{
+  const tex = canvasTex(256, 128, (g, w, h) => { for (let i = 0; i < 8; i++) { g.fillStyle = i % 2 ? '#fff' : '#ff5a5a'; g.fillRect(i * w / 8, 0, w / 8, h); } });
+  ballMeshes.ball = new THREE.Mesh(new THREE.SphereGeometry(CFG.balls.ball.r, 24, 16), std({ map: tex, roughness: 0.5 }));
+  ballMeshes.iron = new THREE.Mesh(new THREE.SphereGeometry(CFG.balls.iron.r, 24, 16), std({ color: 0x59606c, roughness: 0.3, metalness: 0.55 }));
+  const bomb = new THREE.Group();
+  bomb.add(new THREE.Mesh(new THREE.SphereGeometry(CFG.balls.bomb.r, 24, 16), std({ color: 0x23252b, roughness: 0.4 })));
+  const fuse = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.22, 6), std({ color: 0xc9a36a }));
+  fuse.position.y = CFG.balls.bomb.r + 0.08; bomb.add(fuse);
+  const spark = new THREE.Mesh(new THREE.SphereGeometry(0.07, 8, 6), new THREE.MeshBasicMaterial({ color: 0xffb300 }));
+  spark.position.y = CFG.balls.bomb.r + 0.2; bomb.add(spark); bomb.userData.spark = spark;
+  ballMeshes.bomb = bomb;
+  for (const k in ballMeshes) { ballMeshes[k].traverse(o => { if (o.isMesh) o.castShadow = true; }); ballMeshes[k].visible = false; scene.add(ballMeshes[k]); }
+}
+const flash = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 14), new THREE.MeshBasicMaterial({ color: 0xffd060, transparent: true, opacity: 0, depthWrite: false }));
+flash.visible = false; scene.add(flash);
+
+// かけら（火花・紙ふぶき）
+const parts = [], partGeo = new THREE.BoxGeometry(0.09, 0.09, 0.09), partMats = {};
+function burst(pos, n, cols, speed, up = 0.5) {
+  for (let i = 0; i < n; i++) {
+    let p = parts.find(q => q.life <= 0);
+    if (!p) { if (parts.length >= 140) return; p = { m: new THREE.Mesh(partGeo), v: new THREE.Vector3(), life: 0 }; scene.add(p.m); parts.push(p); }
+    const c = cols[i % cols.length]; p.m.material = partMats[c] || (partMats[c] = new THREE.MeshBasicMaterial({ color: c }));
+    p.m.position.copy(pos); p.m.visible = true;
+    p.v.set(rnd(-1, 1), rnd(-1, 1) + up, rnd(-1, 1)).normalize().multiplyScalar(rnd(speed * .4, speed));
+    p.life = rnd(0.5, 1.1);
+  }
+}
+
+/* ================= 演出（ヒットストップ・スロー・ゆれ） ================= */
+const fx = { shake: 0, flash: 0 };
+function impactFX(k) { fx.shake = 0.18 * k; }   // 画面のゆれだけ（スローなし）
+let msgTimer = 0;
+function showMsg(t, dur = 1.2) { const m = $('msg'); m.innerHTML = t; m.classList.add('on'); msgTimer = dur; }
+
+/* ================= 画面（オーバーレイ） ================= */
+const overlay = $('overlay'), panel = $('panel');
+let helpPrev = null;
+function openPanel(html) { panel.innerHTML = html; overlay.classList.remove('hide'); }
+function closePanel() { overlay.classList.add('hide'); }
+const R = (k, r) => `<ruby>${k}<rt>${r}</rt></ruby>`;
+const HELP_ICONS = [
+  `<svg viewBox="0 0 120 90" width="120" height="90"><rect x="20" y="70" width="80" height="14" fill="#b9895a" stroke="#333" stroke-width="3"/><rect x="30" y="46" width="24" height="24" fill="#e5484d" stroke="#333" stroke-width="3"/><rect x="56" y="46" width="24" height="24" fill="#3b82f6" stroke="#333" stroke-width="3"/><rect x="43" y="22" width="24" height="24" fill="#f5b301" stroke="#333" stroke-width="3" stroke-dasharray="5 4"/><path d="M92 14l-14 14M78 28l2-10M78 28l10-2" stroke="#333" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`,
+  `<svg viewBox="0 0 120 90" width="120" height="90"><circle cx="60" cy="34" r="16" fill="#ff5a5a" stroke="#333" stroke-width="3"/><path d="M60 54v24M60 78l-9-10M60 78l9-10" stroke="#2f6fed" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M60 14V4M60 4l-7 7M60 4l7 7" stroke="#22a35a" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="1 9"/><text x="86" y="74" font-size="14" font-weight="700">ひっぱる</text></svg>`,
+  `<svg viewBox="0 0 120 90" width="120" height="90"><rect x="40" y="70" width="40" height="14" fill="#b9895a" stroke="#333" stroke-width="3"/><rect x="12" y="20" width="20" height="20" fill="#e5484d" stroke="#333" stroke-width="3" transform="rotate(-25 22 30)"/><rect x="86" y="12" width="20" height="20" fill="#3b82f6" stroke="#333" stroke-width="3" transform="rotate(30 96 22)"/><polygon points="60,8 72,30 48,30" fill="#f97316" stroke="#333" stroke-width="3"/><path d="M60 62l-18-14M60 62l18-14M60 62V40" stroke="#f5b301" stroke-width="5" stroke-linecap="round"/></svg>`,
+];
+function showHelp() {
+  helpPrev = { html: panel.innerHTML, open: !overlay.classList.contains('hide'), first: G.firstHelp };
+  G.paused = true;
+  openPanel(`<h1>つんで パッカーン！</h1>
+  <div class="steps">
+    <div class="step">${HELP_ICONS[0]}<p><b>① ${R('積', 'つ')}む</b><br>ブロックを えらんで、${R('台', 'だい')}を さわると おける</p></div>
+    <div class="step">${HELP_ICONS[1]}<p><b>② ${R('投', 'な')}げる</b><br>ゆびで ${R('下', 'した')}に ひっぱって、はなす</p></div>
+    <div class="step">${HELP_ICONS[2]}<p><b>③ パッカーン！</b><br>${R('台', 'だい')}から ${R('落', 'お')}とした ${R('数', 'かず')}を かぞえるよ</p></div>
+  </div>
+  <p>${R('右上', 'みぎうえ')}の「？」で、いつでも この ${R('説明', 'せつめい')}を ${R('見', 'み')}られるよ</p>
+  <button class="big" data-act="helpClose">${G.firstHelp ? 'はじめる' : 'つづける'}</button>`);
+}
+function closeHelp() {
+  G.paused = false;
+  if (helpPrev && helpPrev.first) { G.firstHelp = false; showMenu(); return; }
+  if (helpPrev && helpPrev.open) panel.innerHTML = helpPrev.html; else closePanel();
+}
+function showMenu() {
+  G.screen = 'menu'; G.view = 'orbit'; G.ball = null; G.ready = false; hideBalls();
+  $('buildUI').classList.add('hide'); $('smashUI').classList.add('hide'); $('hint').classList.add('hide'); sling.visible = false;
+  if (!pieces.length) { G.skin = 'blocks'; applyPreset(0); }
+  renderMenu(); hud();
+}
+function renderMenu() {
+  const vs = G.mode === 'vs', o = G.opts;
+  const seg = (key, on, a, b) => `<button data-act="opt" data-k="${key}" data-v="0" class="${!on ? 'sel' : ''}" ${vs ? 'disabled' : ''}>${a}</button><button data-act="opt" data-k="${key}" data-v="1" class="${on ? 'sel' : ''}" ${vs ? 'disabled' : ''}>${b}</button>`;
+  const L = lim();
+  openPanel(`<h2>あそびかたを えらぼう</h2>
+  <div class="row modes">
+    <button data-act="mode" data-v="solo" class="${G.mode === 'solo' ? 'sel' : ''}">ひとりで</button>
+    <button data-act="mode" data-v="coop" class="${G.mode === 'coop' ? 'sel' : ''}">ふたりで<br>${R('協力', 'きょうりょく')}</button>
+    <button data-act="mode" data-v="vs" class="${vs ? 'sel' : ''}">ふたりで<br>${R('対戦', 'たいせん')}</button>
+  </div>
+  <div class="opt"><span>${R('投', 'な')}げる ${R('回数', 'かいすう')}</span>${seg('balls', L.balls, 'なんかいでも', CFG.limitBalls + 'かい')}</div>
+  <div class="opt"><span>${R('積', 'つ')}む ${R('数', 'かず')}</span>${seg('count', L.count, 'いくつでも', CFG.limitPieces + 'こ')}</div>
+  <div class="opt"><span>${R('積', 'つ')}む ${R('時間', 'じかん')}</span>${seg('time', L.time, 'ゆっくり', CFG.buildTime + 'びょう')}</div>
+  <p>${vs ? `${R('対戦', 'たいせん')}は ${CFG.limitPieces}こ ぜんぶ ${R('積', 'つ')}んで、${CFG.limitBalls}かいで しょうぶ！` : G.mode === 'coop' ? `ひとりが ${R('積', 'つ')}んで、もう ひとりが こわす。こうたいで 2かい あそぶよ` : `すきに ${R('積', 'つ')}んで、すきに こわそう`}</p>
+  <button class="big" data-act="go">スタート</button>`);
+}
+panel.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  audioInit(); SFX.tap();
+  const a = b.dataset.act;
+  if (a === 'helpClose') closeHelp();
+  else if (a === 'mode') { G.mode = b.dataset.v; renderMenu(); }
+  else if (a === 'opt') { G.opts[b.dataset.k] = b.dataset.v === '1'; renderMenu(); }
+  else if (a === 'go') startGame();
+  else if (a === 'handOk') { closePanel(); startSmash(); }
+  else if (a === 'retry') { closePanel(); restoreSnapshot(); startSmash(); }
+  else if (a === 'new') { closePanel(); startGame(); }
+  else if (a === 'next') { closePanel(); G.round = 1; startBuild(); }
+  else if (a === 'menu') { clearPieces(); showMenu(); }
+});
+$('helpBtn').addEventListener('click', () => { audioInit(); SFX.tap(); if (!G.paused) showHelp(); });
+
+/* ================= HUD ================= */
+function hud() {
+  const who = $('who'), info = $('info'), two = G.mode !== 'solo', L = lim();
+  if (G.screen === 'build') {
+    who.innerHTML = two ? `${pl(G.builder)} が つむ ばん` : 'つむ じかん';
+    const left = maxCount() - pieces.length;
+    let t = L.count ? `のこり ${left}こ` : `${pieces.length}こ つんだ`;
+    if (L.time) t += `　⏱ ${Math.max(0, Math.ceil(G.timeLeft))}`;
+    info.innerHTML = t;
+    const ok = pieces.length >= 1 && (!L.must || left <= 0);
+    $('bDone').disabled = !ok;
+    $('bDone').innerHTML = L.must && left > 0 ? `あと ${left}こ` : 'できた！';
+  } else if (G.screen === 'smash' || G.screen === 'smashEnd') {
+    who.innerHTML = two ? `${pl(G.smasher)} が こわす ばん` : 'こわす じかん';
+    let t = `おとした かず <b style="font-size:30px">${G.fallen}</b> / ${G.total}`;
+    if (L.balls) t += '　' + '●'.repeat(Math.max(0, G.ballsLeft)) + '○'.repeat(CFG.limitBalls - Math.max(0, G.ballsLeft));
+    info.innerHTML = t;
+  } else { who.innerHTML = 'つんで パッカーン！'; info.innerHTML = ''; }
+  who.classList.toggle('hide', !who.innerHTML); info.classList.toggle('hide', !info.innerHTML);
+}
+function bumpInfo() { const i = $('info'); i.classList.remove('bump'); void i.offsetWidth; i.classList.add('bump'); }
+
+/* ================= 積むフェーズ ================= */
+function icon(shape, col, face) {
+  const st = `fill="${col}" stroke="#333" stroke-width="3" stroke-linejoin="round"`;
+  let body = '', fy = 34;
+  if (shape === 'cube') body = `<rect x="14" y="14" width="36" height="36" rx="3" ${st}/>`;
+  if (shape === 'tall') body = `<rect x="21" y="5" width="22" height="54" rx="3" ${st}/>`;
+  if (shape === 'plank') { body = `<rect x="4" y="24" width="56" height="16" rx="3" ${st}/>`; fy = 32; }
+  if (shape === 'cyl') body = `<path d="M16 22v22a16 7 0 0 0 32 0V22z" ${st}/><ellipse cx="32" cy="22" rx="16" ry="7" ${st}/>`, fy = 40;
+  if (shape === 'tri') { body = `<polygon points="32,10 56,54 8,54" ${st}/>`; fy = 42; }
+  const f = face ? `<circle cx="26" cy="${fy - 2}" r="2.6" fill="#222"/><circle cx="38" cy="${fy - 2}" r="2.6" fill="#222"/><path d="M28 ${fy + 4}q4 4 8 0" stroke="#222" stroke-width="2" fill="none"/>` : '';
+  return `<svg viewBox="0 0 64 64" width="46" height="46">${body}${f}</svg>`;
+}
+function renderTray() {
+  $('tabs').innerHTML = SKIN_KEYS.map(k => `<button data-skin="${k}" class="${G.skin === k ? 'sel' : ''}">${SKINS[k].label}</button>`).join('');
+  $('shapes').innerHTML = SHAPE_KEYS.map(s => `<button data-shape="${s}" class="${G.shape === s ? 'sel' : ''}">${icon(s, SKINS[G.skin].cols[s], G.skin === 'chara')}<span>${SKINS[G.skin].names[s]}</span></button>`).join('');
+  $('bRot').disabled = SHAPES[G.shape].oris.length < 2;
+}
+$('tabs').addEventListener('click', e => { const b = e.target.closest('[data-skin]'); if (!b) return; SFX.tap(); G.skin = b.dataset.skin; renderTray(); makeGhost(); });
+$('shapes').addEventListener('click', e => { const b = e.target.closest('[data-shape]'); if (!b) return; SFX.tap(); G.shape = b.dataset.shape; renderTray(); makeGhost(); });
+$('bRot').addEventListener('click', () => { SFX.tap(); G.ori[G.shape] = (G.ori[G.shape] + 1) % SHAPES[G.shape].oris.length; makeGhost(); previewGhost(); });
+$('bUndo').addEventListener('click', () => { if (G.screen !== 'build' || !pieces.length) return; SFX.pop(); removePiece(pieces[pieces.length - 1]); hud(); });
+$('bAuto').addEventListener('click', () => { if (G.screen !== 'build') return; SFX.place(); applyPreset(G.autoIdx); G.autoIdx = (G.autoIdx + 1) % 3; hud(); });
+$('bCamL').addEventListener('click', () => { SFX.tap(); G.camAngT -= Math.PI / 4; });
+$('bCamR').addEventListener('click', () => { SFX.tap(); G.camAngT += Math.PI / 4; });
+$('bDone').addEventListener('click', () => { if (G.screen === 'build') { SFX.tap(); finishBuild(); } });
+
+// 置く場所のガイド（半透明）
+const ghost = new THREE.Group(); ghost.visible = false; scene.add(ghost);
+const ghostMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6, depthWrite: false });
+const ghostRing = new THREE.Mesh(new THREE.RingGeometry(0.2, 0.3, 20), new THREE.MeshBasicMaterial({ color: 0x222222, transparent: true, opacity: 0.5, side: THREE.DoubleSide }));
+ghostRing.rotation.x = -Math.PI / 2; ghost.add(ghostRing);
+let ghostMesh = null; const ghostState = { ok: false, x: 0, y: 0, z: 0, shown: false };
+function makeGhost() {
+  if (ghostMesh) ghost.remove(ghostMesh);
+  ghostMesh = new THREE.Mesh(GEO[G.shape], ghostMat); ghost.add(ghostMesh);
+  ghostMesh.quaternion.copy(SHAPES[G.shape].oris[G.ori[G.shape]]);
+}
+function previewGhost() { // 「むき」を変えたとき、台のまん中に見本を出す
+  if (G.screen !== 'build') return;
+  placeGhostAt(ghostState.shown ? ghostState.x : 0, ghostState.shown ? ghostState.z : 0); ghostTimer = 1.2;
+}
+let ghostTimer = 0;
+const rayFrom = new CANNON.Vec3(), rayTo = new CANNON.Vec3(), rayRes = new CANNON.RaycastResult();
+function supportY(x, z, hx, hz) {
+  let best = 0;
+  for (const sx of [-0.8, 0, 0.8]) for (const sz of [-0.8, 0, 0.8]) {
+    rayFrom.set(x + sx * hx, 40, z + sz * hz); rayTo.set(x + sx * hx, -1, z + sz * hz); rayRes.reset();
+    world.raycastClosest(rayFrom, rayTo, { skipBackfaces: true }, rayRes);
+    if (rayRes.hasHit) best = Math.max(best, rayRes.hitPointWorld.y);
+  }
+  return best;
+}
+function placeGhostAt(x, z) {
+  const e = extent(G.shape, G.ori[G.shape]), g = CFG.grid;
+  const lx = Math.max(0, TB.half - e.hx), lz = Math.max(0, TB.half - e.hz);
+  x = clamp(Math.round(x / g) * g, -lx, lx); z = clamp(Math.round(z / g) * g, -lz, lz);
+  const sy = supportY(x, z, e.hx, e.hz), y = sy + e.bot + 0.03;
+  const ok = pieces.length < maxCount() && sy <= TB.top + CFG.maxHeight && sy >= TB.top - 0.01;
+  Object.assign(ghostState, { ok, x, y, z, shown: true });
+  ghost.visible = true; ghostMesh.position.set(x, y, z); ghostRing.position.set(x, sy + 0.02, z);
+  ghostMat.color.set(ok ? SKINS[G.skin].cols[G.shape] : '#ff2222'); ghostMat.opacity = ok ? 0.6 : 0.35;
+}
+const raycaster = new THREE.Raycaster(), ndc = new THREE.Vector2(), tmpV = new THREE.Vector3(), tablePlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -TB.top);
+function ghostFromPointer(e) {
+  const off = e.pointerType === 'touch' ? CFG.fingerOffset : 0;
+  ndc.set(e.clientX / innerWidth * 2 - 1, -((e.clientY - off) / innerHeight) * 2 + 1);
+  raycaster.setFromCamera(ndc, camera);
+  const hits = raycaster.intersectObjects([tableMesh, ...pieces.map(p => p.mesh)], false);
+  let x, z;
+  if (hits.length) {
+    const h = hits[0]; x = h.point.x; z = h.point.z;
+    if (h.face) { tmpV.copy(h.face.normal).transformDirection(h.object.matrixWorld); x -= tmpV.x * 0.12; z -= tmpV.z * 0.12; }
+  } else if (raycaster.ray.intersectPlane(tablePlane, tmpV)) { x = tmpV.x; z = tmpV.z; }
+  else return;
+  placeGhostAt(x, z);
+}
+function placeNow() {
+  if (!ghostState.ok) { if (pieces.length >= maxCount()) showMsg('もう ブロックが ないよ', 1); return null; }
+  const p = addPiece(G.shape, G.skin, G.ori[G.shape], ghostState.x, ghostState.y, ghostState.z);
+  SFX.place(); hud(); return p;
+}
+
+function startGame() {
+  closePanel(); G.round = 0; G.scores = [0, 0]; G.totals = [0, 0]; G.autoIdx = 0;
+  startBuild();
+}
+function startBuild() {
+  clearPieces(); hideBalls(); G.ball = null; G.ready = false;
+  G.builder = G.round % 2; G.smasher = G.mode === 'solo' ? 0 : 1 - G.builder;
+  G.screen = 'build'; G.view = 'orbit'; G.timeLeft = CFG.buildTime; G.camAngT = G.camAng = 0.6;
+  $('buildUI').classList.remove('hide'); $('smashUI').classList.add('hide'); sling.visible = false;
+  $('bAuto').classList.toggle('hide', G.mode === 'vs');
+  renderTray(); makeGhost(); ghost.visible = false; ghostState.shown = false;
+  $('hint').classList.remove('hide'); $('hint').firstElementChild.innerHTML = `ブロックを えらんで、${R('台', 'だい')}を さわろう`;
+  if (G.mode !== 'solo') { showMsg(`${P[G.builder].mark} ${P[G.builder].name} が つむ ばん`, 1.6); SFX.turn(); }
+  hud();
+}
+function finishBuild() {
+  if (!pieces.length) applyPreset(0);
+  ghost.visible = false; $('buildUI').classList.add('hide'); $('hint').classList.add('hide');
+  takeSnapshot();
+  if (G.mode === 'solo') { startSmash(); return; }
+  G.screen = 'handover'; SFX.turn(); hud();
+  openPanel(`<h1>こうたい！</h1><p style="font-size:28px">つぎは ${pl(G.smasher)} が<br>こわす ばん</p><p>iPadを わたしてね</p><button class="big" data-act="handOk">OK</button>`);
+}
+function takeSnapshot() {
+  G.snapshot = pieces.map(p => ({ shape: p.shape, skin: p.skin, ori: p.ori, p: p.body.position.toArray(), q: p.body.quaternion.toArray() }));
+}
+function restoreSnapshot() {
+  clearPieces();
+  for (const s of G.snapshot) { const p = addPiece(s.shape, s.skin, s.ori, s.p[0], s.p[1], s.p[2], new CANNON.Quaternion(s.q[0], s.q[1], s.q[2], s.q[3])); p.body.sleep(); }
+}
+
+/* ================= 壊すフェーズ ================= */
+function hideBalls() { for (const k in ballMeshes) ballMeshes[k].visible = false; for (const d of dots) d.visible = false; }
+function renderBallSel() {
+  const vs = G.mode === 'vs', cols = { ball: '#ff5a5a', iron: '#59606c', bomb: '#23252b' };
+  $('ballSel').innerHTML = vs
+    ? `<div style="padding:8px 12px;font-weight:700;font-size:18px;display:flex;gap:8px;align-items:center">つぎの たま：<span class="dot" style="background:${cols[G.ballType]}"></span>${CFG.balls[G.ballType].name}</div>`
+    : ['ball', 'iron', 'bomb'].map(k => `<button data-ball="${k}" class="${G.ballType === k ? 'sel' : ''}"><span class="dot" style="background:${cols[k]}"></span>${CFG.balls[k].name}</button>`).join('');
+  $('bEnd').classList.toggle('hide', lim().balls);
+}
+$('ballSel').addEventListener('click', e => { const b = e.target.closest('[data-ball]'); if (!b || !G.ready) return; SFX.tap(); G.ballType = b.dataset.ball; loadBall(); });
+$('bEnd').addEventListener('click', () => { if (G.screen === 'smash') { SFX.tap(); finishSmash(); } });
+
+function startSmash() {
+  G.screen = 'smash'; G.view = 'throw'; G.total = pieces.length; G.fallen = 0; G.thrown = 0; G.perfect = false;
+  for (const p of pieces) p.fallen = false;
+  setDamping(CFG.smashDamp);
+  G.ballsLeft = lim().balls ? CFG.limitBalls : Infinity;
+  if (G.mode !== 'vs' && !CFG.balls[G.ballType]) G.ballType = 'ball';
+  $('buildUI').classList.add('hide'); $('smashUI').classList.remove('hide'); sling.visible = true;
+  if (!G.hintDone) { $('hint').classList.remove('hide'); $('hint').firstElementChild.innerHTML = `ゆびで ${R('下', 'した')}に ひっぱって、はなす！`; }
+  loadBall(); hud();
+}
+function loadBall() {
+  if (G.mode === 'vs') G.ballType = CFG.vsBalls[Math.min(G.thrown, CFG.vsBalls.length - 1)];
+  hideBalls(); G.ball = null; G.ready = true; G.pulling = false; G.aim = null;
+  const m = ballMeshes[G.ballType]; m.visible = true; m.position.set(L.x, L.y, L.z); m.quaternion.identity();
+  renderBallSel();
+}
+function aimFromPull(px, py) {
+  const T = CFG.throw, ref = T.pull * innerHeight;
+  py = Math.max(0, py);
+  const power = clamp(Math.hypot(px, py) / ref, 0, 1);
+  const yaw = clamp(-px / ref, -1, 1) * T.yawMax * Math.PI / 180;
+  return { power, yaw };
+}
+function aimVelocity(a) {
+  const T = CFG.throw, v = lerp(T.vMin, T.vMax, a.power), pitch = lerp(T.pitchMin, T.pitchMax, a.power) * Math.PI / 180;
+  return new CANNON.Vec3(Math.sin(a.yaw) * Math.cos(pitch) * v, Math.sin(pitch) * v, -Math.cos(a.yaw) * Math.cos(pitch) * v);
+}
+function showAim() {
+  const a = G.aim, m = ballMeshes[G.ballType];
+  if (!a) { for (const d of dots) d.visible = false; m.position.set(L.x, L.y, L.z); return; }
+  m.position.set(L.x - Math.sin(a.yaw) * 0.3 * a.power, L.y - 0.06 * a.power, L.z + 0.3 * a.power);
+  const v = aimVelocity(a), p = new THREE.Vector3(L.x, L.y, L.z), h = 0.05, on = a.power >= CFG.throw.minPower;
+  let alive = true;
+  for (let i = 0; i < dots.length; i++) {
+    p.x += v.x * h; p.y += v.y * h; p.z += v.z * h; v.y += CFG.ballGravity * h;
+    if (p.y < 0.05 || p.z < -2.5) alive = false;
+    dots[i].visible = on && alive; dots[i].position.copy(p);
+  }
+}
+function launch(a) {
+  const B = CFG.balls[G.ballType];
+  const body = new CANNON.Body({ mass: B.mass, material: M.ball, linearDamping: 0.01, angularDamping: 0.2 });
+  body.addShape(new CANNON.Sphere(B.r)); setPose(body, L.x, L.y, L.z);
+  body.velocity.copy(aimVelocity(a)); body.angularVelocity.set(-8, 0, 0);
+  const ball = { body, mesh: ballMeshes[G.ballType], type: G.ballType, t: 0, hit: false, hitT: 0, explode: false, vel: 0 };
+  body.addEventListener('collide', e => {
+    const v = Math.abs(e.contact.getImpactVelocityAlongNormal());
+    if (ball.type === 'bomb') { if (e.body !== groundBody || ball.t > 0.05) ball.explode = true; return; }
+    if (e.body.piece && !ball.hit) { ball.hit = true; ball.vel = v; }
+    else if (v > 2) SFX.clack(v * 1.5);
+  });
+  world.addBody(body); G.ball = ball; G.ready = false; G.aim = null; G.thrown++;
+  if (lim().balls) G.ballsLeft--;
+  for (const d of dots) d.visible = false;
+  G.hintDone = true; $('hint').classList.add('hide');
+  SFX.whoosh(); hud();
+}
+function explode(ball) {
+  const B = CFG.balls.bomb, c = ball.body.position.clone();
+  for (const p of pieces) {
+    const b = p.body, d = b.position.vsub(c), dist = d.length();
+    if (dist > B.radius) continue;
+    d.y += 0.5; d.normalize(); b.wakeUp();
+    b.velocity.vadd(d.scale(B.power * (1 - 0.6 * dist / B.radius)), b.velocity);
+    b.angularVelocity.set(rnd(-9, 9), rnd(-9, 9), rnd(-9, 9));
+  }
+  tmpV.set(c.x, c.y, c.z);
+  flash.position.copy(tmpV); flash.visible = true; fx.flash = 1;
+  burst(tmpV, 46, [0xffd060, 0xff7a2a, 0xffffff, 0x555555], 9);
+  SFX.boom(); impactFX(1.6); showMsg('ドッカーン！', 1.1);
+  ball.hit = true; ball.hitT = 0; ball.done = true;
+  world.removeBody(ball.body); ball.mesh.visible = false;
+}
+function endThrow() {
+  const ball = G.ball; if (!ball) return;
+  if (!ball.done) world.removeBody(ball.body);
+  ball.mesh.visible = false; G.ball = null;
+  for (const p of pieces) p.body.wakeUp();
+  if (G.fallen >= G.total || G.ballsLeft <= 0) finishSmash(); else loadBall();
+}
+function finishSmash() {
+  if (G.screen !== 'smash') return;
+  if (G.ball) { if (!G.ball.done) world.removeBody(G.ball.body); G.ball.mesh.visible = false; G.ball = null; }
+  hideBalls(); G.ready = false; G.screen = 'smashEnd'; G.endTimer = 1.3;
+  $('smashUI').classList.add('hide'); $('hint').classList.add('hide');
+}
+function showResult() {
+  G.screen = 'result'; sling.visible = false;
+  const n = G.fallen, t = G.total, all = n >= t;
+  const stars = '★'.repeat(all ? 3 : n >= t * 2 / 3 ? 2 : n >= t / 3 ? 1 : 0) + '☆'.repeat(all ? 0 : n >= t * 2 / 3 ? 1 : n >= t / 3 ? 2 : 3);
+  if (all) SFX.perfect(); else SFX.fanfare();
+  burst(tmpV.set(0, TB.top + 4, 0), 60, [0xff5a5a, 0xffd84d, 0x5fd068, 0x3b82f6, 0xffffff], 7, 0.2);
+  G.scores[G.smasher] = n; G.totals[G.smasher] = t;
+  const head = `<div class="score">${n}こ</div><h2>${all ? 'ぜんぶ おとした！ パーフェクト！' : 'おとした！'}</h2><div class="stars">${stars}</div><p>（ぜんぶで ${t}こ）</p>`;
+  if (G.mode === 'solo') {
+    openPanel(head + `<div class="row"><button class="big" data-act="retry" style="font-size:20px;background:#ffe36e">おなじ つみかたで<br>もういちど</button><button class="big" data-act="new" style="font-size:20px">あたらしく<br>つむ</button><button class="big" data-act="menu" style="font-size:20px;background:#fff">メニューへ</button></div>`);
+  } else if (G.round === 0) {
+    openPanel(`<p style="font-size:24px">${pl(G.smasher)} は</p>` + head + `<p style="font-size:22px">つぎは ${pl(G.smasher)} が つむ ばん。<br>${pl(G.builder)} は こわす じゅんびを してね</p><button class="big" data-act="next">つぎへ</button>`);
+  } else showFinal();
+}
+function showFinal() {
+  const [a, b] = G.scores;
+  const box = i => `<div style="border-color:${P[i].col}">${pl(i)}<div class="n">${G.scores[i]}こ</div></div>`;
+  let title;
+  if (G.mode === 'coop') title = `<h1>ふたりで ${a + b}こ おとした！</h1>`;
+  else title = a === b ? `<h1>ひきわけ！ どっちも すごい</h1>` : `<h1>${pl(a > b ? 0 : 1)} の かち！</h1>`;
+  openPanel(title + `<div class="vs">${box(0)}${box(1)}</div><div class="row"><button class="big" data-act="new">もういちど</button><button class="big" data-act="menu" style="background:#fff">メニューへ</button></div>`);
+}
+
+/* ================= 入力（タッチ・マウス） ================= */
+let pid = null, pullStart = null;
+canvas.addEventListener('pointerdown', e => {
+  audioInit();
+  if (G.paused || !overlay.classList.contains('hide') || pid !== null) return;
+  pid = e.pointerId; try { canvas.setPointerCapture(pid); } catch (_) {}
+  if (G.screen === 'build') { ghostTimer = 0; ghostFromPointer(e); }
+  else if (G.screen === 'smash' && G.ready) { G.pulling = true; pullStart = { x: e.clientX, y: e.clientY }; G.aim = { power: 0, yaw: 0 }; }
+});
+canvas.addEventListener('pointermove', e => {
+  if (e.pointerId !== pid) return;
+  if (G.screen === 'build') ghostFromPointer(e);
+  else if (G.pulling) { G.aim = aimFromPull(e.clientX - pullStart.x, e.clientY - pullStart.y); }
+});
+function pointerEnd(e, cancel) {
+  if (e.pointerId !== pid) return; pid = null;
+  if (G.screen === 'build') { if (!cancel && ghostState.shown && ghost.visible) placeNow(); ghost.visible = false; ghostState.shown = false; }
+  else if (G.pulling) {
+    G.pulling = false; const a = G.aim; G.aim = null;
+    if (!cancel && a && a.power >= CFG.throw.minPower && G.screen === 'smash' && G.ready) launch(a);
+    else showAim();
+  }
+}
+canvas.addEventListener('pointerup', e => pointerEnd(e, false));
+canvas.addEventListener('pointercancel', e => pointerEnd(e, true));
+
+// iPad：拡大・スクロールの防止
+let lastTouch = 0;
+document.addEventListener('touchend', e => { const n = Date.now(); if (n - lastTouch < 300 && !(e.target.closest && e.target.closest('button'))) e.preventDefault(); lastTouch = n; }, { passive: false });
+document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+for (const ev of ['gesturestart', 'gesturechange', 'gestureend']) document.addEventListener(ev, e => e.preventDefault());
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+/* ================= 毎フレームの更新 ================= */
+function update(dt) {
+  G.frames++; G.elapsed += dt;
+  const sdt = dt;
+  world.step(1 / 60, sdt, 4);
+
+  if (G.screen === 'menu') G.camAngT += dt * 0.25;
+
+  if (G.screen === 'build') {
+    for (let i = pieces.length - 1; i >= 0; i--) if (pieces[i].body.position.y < TB.top - CFG.fallBelow) { removePiece(pieces[i]); SFX.pop(); hud(); }
+    if (ghostTimer > 0) { ghostTimer -= dt; if (ghostTimer <= 0 && pid === null) { ghost.visible = false; ghostState.shown = false; } }
+    if (lim().time) {
+      const before = Math.ceil(G.timeLeft); G.timeLeft -= dt; const now = Math.ceil(G.timeLeft);
+      if (now !== before) { hud(); if (now <= 10 && now > 0) SFX.tick(); }
+      if (G.timeLeft <= 0) { showMsg('じかんぎれ！', 1.2); pid = null; finishBuild(); }
+    }
+  }
+
+  if (G.screen === 'smash' || G.screen === 'smashEnd') {
+    for (const p of pieces) if (!p.fallen && p.body.position.y < TB.top - CFG.fallBelow) {
+      p.fallen = true; G.fallen++; SFX.count(); hud(); bumpInfo();
+      if (G.fallen >= G.total && !G.perfect) { G.perfect = true; showMsg('ぜんぶ おとした！', 1.6); }
+    }
+    const ball = G.ball;
+    if (ball) {
+      ball.t += sdt;
+      if (ball.explode && !ball.done) explode(ball);
+      if (ball.hit && ball.hitT === 0 && !ball.done) {   // 当たった瞬間
+        impactFX(clamp(ball.vel / 10, 0.6, 1.4)); SFX.kaan(ball.vel / 10, ball.type === 'iron'); showMsg('パッカーン！', 1.0);
+        tmpV.copy(ball.body.position); burst(tmpV, 22, [0xffffff, 0xffe36e, 0xffa53a], 6);
+      }
+      if (ball.hit) ball.hitT += Math.max(sdt, 1e-4);
+      const calm = pieces.every(p => p.fallen || p.body.sleepState === CANNON.Body.SLEEPING || p.body.velocity.lengthSquared() < 0.09);
+      const S = CFG.settle;
+      const gone = !ball.done && (ball.body.position.y < -2 || ball.body.position.length() > 60);
+      if (ball.t > S.max || gone || (ball.hit && ball.hitT > S.afterHit && calm) || (!ball.hit && ball.t > S.noHit)) endThrow();
+    }
+    if (G.screen === 'smashEnd') { G.endTimer -= dt; if (G.endTimer <= 0) showResult(); }
+  }
+  if (G.screen === 'smash' && (G.pulling || G.ready)) showAim();
+
+  // 見た目を物理に合わせる
+  for (const p of pieces) {
+    syncMesh(p);
+    if (p.face) { const want = (p.fallen || p.body.velocity.lengthSquared() > 6) ? p.face.s : p.face.n; if (p.mesh.material[p.face.slot] !== want) p.mesh.material[p.face.slot] = want; }
+  }
+  if (G.ball && !G.ball.done) { G.ball.mesh.position.copy(G.ball.body.interpolatedPosition); G.ball.mesh.quaternion.copy(G.ball.body.interpolatedQuaternion); }
+  ballMeshes.bomb.userData.spark.scale.setScalar(0.7 + 0.5 * Math.sin(G.elapsed * 30));
+  // ゴム
+  if (sling.visible) {
+    const m = ballMeshes[G.ballType], held = G.ready && m.visible, a = bandGeo.attributes.position;
+    a.setXYZ(0, L.x - 0.55, L.y + 0.25, L.z); a.setXYZ(2, L.x + 0.55, L.y + 0.25, L.z);
+    if (held) a.setXYZ(1, m.position.x, m.position.y, m.position.z); else a.setXYZ(1, L.x, L.y + 0.25, L.z);
+    a.needsUpdate = true;
+  }
+  // かけら・ばくはつ
+  for (const p of parts) if (p.life > 0) {
+    p.life -= sdt; p.v.y += CFG.gravity * 0.6 * sdt; p.m.position.addScaledVector(p.v, sdt);
+    p.m.rotation.x += 9 * sdt; p.m.rotation.y += 7 * sdt;
+    if (p.life <= 0 || p.m.position.y < 0) { p.life = 0; p.m.visible = false; }
+  }
+  if (fx.flash > 0) { fx.flash -= dt * 2.2; const k = 1 - fx.flash; flash.scale.setScalar(0.4 + k * CFG.balls.bomb.radius); flash.material.opacity = Math.max(0, fx.flash) * 0.8; if (fx.flash <= 0) flash.visible = false; }
+  if (msgTimer > 0) { msgTimer -= dt; if (msgTimer <= 0) $('msg').classList.remove('on'); }
+
+  // カメラ
+  const k = Number.isFinite(camera.aspect) && camera.aspect > 0 ? Math.max(1, 1.25 / camera.aspect) : 1, e = 1 - Math.exp(-5 * dt);
+  G.camAng = lerp(G.camAng, G.camAngT, 1 - Math.exp(-7 * dt));
+  if (G.view === 'orbit') { tmpV.set(Math.sin(G.camAng) * 7 * k, 4.6, Math.cos(G.camAng) * 7 * k); camLook.lerp(new THREE.Vector3(0, 2.0, 0), e); }
+  else { tmpV.set(0, 2.4, 11.5 * k); camLook.lerp(new THREE.Vector3(0, 1.7, 0), e); }
+  camPos.lerp(tmpV, e);
+  if (!Number.isFinite(camPos.x + camPos.y + camPos.z)) camPos.copy(tmpV);       // 念のため：おかしな値になったら目標位置に戻す
+  if (!Number.isFinite(camLook.x + camLook.y + camLook.z)) camLook.set(0, 1.8, 0);
+  camera.position.copy(camPos);
+  if (fx.shake > 0.002) { camera.position.x += rnd(-1, 1) * fx.shake; camera.position.y += rnd(-1, 1) * fx.shake; fx.shake *= Math.exp(-7 * dt); }
+  camera.lookAt(camLook);
+}
+
+function resize() {
+  // 表示枠が0の大きさのときに縦横比が計算できず（0÷0）、カメラが二度と戻らなくなるのを防ぐ
+  const w = innerWidth, h = innerHeight;
+  if (!(w > 0 && h > 0)) return;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min((now - last) / 1000, 1 / 30); last = now;   // 120Hzでも同じ速さ
+  if (!G.paused && dt > 0) update(dt);
+  renderer.render(scene, camera);
+}
+
+/* ================= テスト用フック =================
+   パーツは cannon-es の body.position で動かし、mesh は body.interpolatedPosition を写しています。
+   判定に使うときは pieces[i].body.position を見てください。 */
+window.__game = {
+  state: G, pieces, camera, world, CFG,
+  api: {
+    tick(n = 1, dt = 1 / 60) { for (let i = 0; i < n; i++) update(dt); },
+    getState() { return { screen: G.screen, mode: G.mode, round: G.round, pieces: pieces.length, total: G.total, fallen: G.fallen, ballsLeft: G.ballsLeft, ready: G.ready, scores: G.scores.slice(), frames: G.frames, elapsed: G.elapsed, ballType: G.ballType, maxY: pieces.reduce((m, p) => Math.max(m, p.body.position.y), 0) }; },
+    start(mode = 'solo', opts = {}) { G.paused = false; G.firstHelp = false; G.mode = mode; Object.assign(G.opts, opts); startGame(); },
+    select(shape, skin, ori = 0) { G.shape = shape; if (skin) G.skin = skin; G.ori[shape] = ori; renderTray(); makeGhost(); },
+    place(x, z) { placeGhostAt(x, z); const p = placeNow(); ghost.visible = false; return !!p; },
+    auto(i = 0) { applyPreset(i); hud(); },
+    done() { finishBuild(); },
+    ok() { const b = panel.querySelector('.big'); if (b) b.click(); },
+    act(a) { const b = panel.querySelector(`[data-act="${a}"]`); if (b) b.click(); },
+    setBall(t) { G.ballType = t; loadBall(); },
+    throwBall(power = 0.6, yawDeg = 0) { if (!G.ready) return false; launch({ power, yaw: yawDeg * Math.PI / 180 }); return true; },
+    endSmash() { finishSmash(); },
+  },
+};
+
+/* ================= 起動 ================= */
+$('ver').textContent = CFG.version;
+applyPreset(0);
+update(1 / 60);
+showHelp();
+hud();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
