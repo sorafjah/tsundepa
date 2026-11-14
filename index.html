@@ -161,7 +161,7 @@ body.phone.port .step svg{flex:none}
 </script>
 </head>
 <body>
-<!-- build: 2026-11-14e -->
+<!-- build: 2026-11-14f -->
 <canvas id="c"></canvas>
 <div id="top">
   <div id="who"></div>
@@ -194,7 +194,7 @@ import * as CANNON from 'cannon-es';
 
 /* ================= 設定（ここの数値だけ直せば調整できます） ================= */
 const CFG = {
-  version: 'v2026-11-14e',
+  version: 'v2026-11-14f',
   table: { half: 1.1, top: 1.2 },      // 台の半分の幅・台の上面の高さ
   grid: 0.25,                           // 置くときに吸いつく間隔
   gravity: -18,
@@ -758,8 +758,6 @@ $('bDone').addEventListener('click', () => { if (G.screen === 'build') { SFX.tap
 // 置く場所のガイド（半透明）
 const ghost = new THREE.Group(); ghost.visible = false; scene.add(ghost);
 const ghostMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6, depthWrite: false });
-const ghostRing = new THREE.Mesh(new THREE.RingGeometry(0.2, 0.3, 20), new THREE.MeshBasicMaterial({ color: 0x222222, transparent: true, opacity: 0.5, side: THREE.DoubleSide }));
-ghostRing.rotation.x = -Math.PI / 2; ghost.add(ghostRing);
 let ghostMesh = null; const ghostState = { ok: false, x: 0, y: 0, z: 0, shown: false };
 function makeGhost() {
   if (ghostMesh) ghost.remove(ghostMesh);
@@ -788,7 +786,7 @@ function placeGhostAt(x, z) {
   const sy = supportY(x, z, e.hx, e.hz), y = sy + e.bot + 0.03;
   const ok = pieces.length < maxCount() && sy <= TB.top + CFG.maxHeight && sy >= TB.top - 0.01;
   Object.assign(ghostState, { ok, x, y, z, shown: true });
-  ghost.visible = true; ghostMesh.position.set(x, y, z); ghostRing.position.set(x, sy + 0.02, z);
+  ghost.visible = true; ghostMesh.position.set(x, y, z);
   ghostMat.color.set(ok ? SKINS[G.skin].cols[G.shape] : '#ff2222'); ghostMat.opacity = ok ? 0.6 : 0.35;
 }
 const raycaster = new THREE.Raycaster(), ndc = new THREE.Vector2(), tmpV = new THREE.Vector3(), tablePlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -TB.top);
