@@ -161,7 +161,7 @@ body.phone.port .step svg{flex:none}
 </script>
 </head>
 <body>
-<!-- build: 2026-11-14g -->
+<!-- build: 2026-11-14h -->
 <canvas id="c"></canvas>
 <div id="top">
   <div id="who"></div>
@@ -194,7 +194,7 @@ import * as CANNON from 'cannon-es';
 
 /* ================= 設定（ここの数値だけ直せば調整できます） ================= */
 const CFG = {
-  version: 'v2026-11-14g',
+  version: 'v2026-11-14h',
   table: { half: 1.1, top: 1.2 },      // 台の半分の幅・台の上面の高さ
   grid: 0.25,                           // 置くときに吸いつく間隔
   gravity: -18,
@@ -216,6 +216,7 @@ const CFG = {
   maxFov: 72,                           // 縦長の画面での視野の上限（度）
   phoneMax: 560,                        // 短い辺がこれより小さい画面はスマホ用の配置
   phoneShift: { port: 0.13, land: 0.08, portThrow: -0.1, landThrow: 0.17 }, // スマホで画面の中心を上にずらす量（積む／投げる）
+  tipNudge: 0.6,                        // ▼を置いたときに少し傾ける速さ（支えがないとこける）
   aimDots: 4,                           // ねらいの点線の長さ（1こ＝0.05秒ぶん。4こで出だしだけ）
   ballGravity: -6,                      // 玉だけ重力を弱くして、ゆっくり飛ばす（台まで約0.8〜1秒）
   balls: {
@@ -423,7 +424,7 @@ const TRI_F = [[0, 1, 2], [3, 5, 4], [0, 3, 4, 1], [1, 4, 5, 2], [0, 2, 5, 3]];
 const SHAPES = {
   cube:  { dims: [.5, .5, .5],  vol: .125,  oris: [QI],         verts: boxV(.5, .5, .5) },
   tall:  { dims: [.5, 1, .5],   vol: .25,   oris: [QI, QZ, QX], verts: boxV(.5, 1, .5) },
-  plank: { dims: [1.5, .2, .5], vol: .15,   oris: [QI, QY, QZ], verts: boxV(1.5, .2, .5) },
+  plank: { dims: [1.5, .2, .5], vol: .15,   oris: [QI, QX, QY, QZ], verts: boxV(1.5, .2, .5) },   // ねかせる → 立てて前を向く → よこ向き → たて
   cyl:   { vol: .098,  oris: [QI, QZ, QX], verts: boxV(.5, .5, .5) },
   tri:   { vol: .0625, oris: [QI, QY, QZ2, QZ2Y], verts: TRI_V },   // ▲ → ▲(よこ) → ▼ → ▼(よこ)
 };
@@ -778,6 +779,14 @@ function ghostFromPointer(e) {
 function placeNow() {
   if (!ghostState.ok) { if (pieces.length >= maxCount()) showMsg('もう ブロックが ないよ', 1); return null; }
   const p = addPiece(G.shape, G.skin, G.ori[G.shape], ghostState.x, ghostState.y, ghostState.z);
+  // ▼（さかさまの三角）は先がとがっていて、ぴったり真ん中だと物理計算ではつり合ったまま立ってしまう。
+  // 置いた瞬間に少しだけ傾け、しばらく眠らせないことで、支えがなければ自然にこけるようにする。
+  if (p.shape === 'tri' && p.ori >= 2) {
+    const axis = p.body.quaternion.vmult(new CANNON.Vec3(0, 0, 1));   // とがった辺の向き（この軸のまわりにこける）
+    const w = CFG.tipNudge * (Math.random() < 0.5 ? -1 : 1);
+    p.body.angularVelocity.set(axis.x * w, axis.y * w, axis.z * w);
+    p.awakeT = 2.0;
+  }
   SFX.place(); hud(); return p;
 }
 
@@ -982,6 +991,7 @@ function update(dt) {
 
   if (G.screen === 'build') {
     for (let i = pieces.length - 1; i >= 0; i--) if (pieces[i].body.position.y < TB.top - CFG.fallBelow) { removePiece(pieces[i]); SFX.pop(); hud(); }
+    for (const p of pieces) if (p.awakeT > 0) { p.awakeT -= dt; p.body.wakeUp(); }
     if (ghostTimer > 0) { ghostTimer -= dt; if (ghostTimer <= 0 && pid === null) { ghost.visible = false; ghostState.shown = false; } }
     if (lim().time) {
       const before = Math.ceil(G.timeLeft); G.timeLeft -= dt; const now = Math.ceil(G.timeLeft);
